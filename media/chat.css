@@ -1,0 +1,1451 @@
+/* Hermes 面板样式
+ * 颜色全部继承 VS Code 主题变量；字号/间距走统一 token，避免"随手拼装"感。 */
+
+/* ── 设计 token ───────────────────────────────────────────── */
+:root {
+  /* 颜色（跟随主题；括号内是 Dark Modern 下的实际值） */
+  --h-border: var(--vscode-panel-border, rgba(128, 128, 128, 0.35));
+  --h-border-strong: var(--vscode-editorWidget-border, rgba(128, 128, 128, 0.5));
+  --h-muted: var(--vscode-descriptionForeground, #9d9d9d);
+  --h-accent: var(--vscode-textLink-foreground, #4daafc);
+  --h-fg: var(--vscode-foreground, #cccccc);
+  --h-surface: var(--vscode-editorWidget-background, rgba(128, 128, 128, 0.06));
+  --h-surface-2: var(--vscode-textCodeBlock-background, rgba(128, 128, 128, 0.12));
+  --h-error: var(--vscode-errorForeground, #f85149);
+  --h-warn: var(--vscode-charts-orange, #d18616);
+  --h-add: var(--vscode-gitDecoration-addedResourceForeground, #81b88b);
+  --h-del: var(--vscode-gitDecoration-deletedResourceForeground, #e34671);
+  --h-hover: var(--vscode-toolbar-hoverBackground, rgba(128, 128, 128, 0.16));
+
+  /* 间距 */
+  --h-1: 4px;
+  --h-2: 8px;
+  --h-3: 12px;
+  --h-4: 16px;
+
+  /* 字号：把层级拉开，正文不再和标签一样大 */
+  --h-fs-xs: 11px;
+  --h-fs-sm: 12px;
+  --h-fs-md: 13.5px;
+  --h-fs-lg: 15px;
+
+  --h-radius: 6px;
+  --h-radius-sm: 4px;
+  --h-mono: var(--vscode-editor-font-family, Consolas, 'Courier New', monospace);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size, 13px);
+  color: var(--h-fg);
+  background: transparent;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ── 顶部 ─────────────────────────────────────────────────── */
+#hdr {
+  flex: 0 0 auto;
+  padding: var(--h-2) var(--h-2) var(--h-1);
+  border-bottom: 1px solid var(--h-border);
+}
+
+.hdr-row {
+  display: flex;
+  align-items: center;
+  gap: var(--h-1);
+  min-height: 26px;
+}
+
+.hdr-row.secondary {
+  margin-top: var(--h-1);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--h-muted);
+  flex: 0 0 auto;
+  margin-left: var(--h-1);
+}
+
+.dot.ready {
+  background: #3fb950;
+}
+
+.dot.running {
+  background: var(--h-warn);
+  animation: h-pulse 1.4s ease-in-out infinite;
+}
+
+.dot.error {
+  background: var(--h-error);
+}
+
+.dot.connecting {
+  background: var(--h-accent);
+  animation: h-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes h-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+#status-text {
+  font-size: var(--h-fs-sm);
+  color: var(--h-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 待确认数量：独立角标，不再拼进状态文字 */
+#pending-badge {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: var(--h-fs-xs);
+  font-weight: 600;
+  line-height: 1.7;
+  color: #1f1f1f;
+  background: var(--h-warn);
+  cursor: pointer;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--h-radius-sm);
+  background: transparent;
+  color: var(--h-fg);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.icon-btn:hover {
+  background: var(--h-hover);
+  border-color: var(--h-border);
+}
+
+.icon-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.text-btn {
+  height: 20px;
+  width: auto;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--h-radius-sm);
+  background: transparent;
+  color: var(--h-muted);
+  font-family: inherit;
+  font-size: var(--h-fs-xs);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.text-btn:hover {
+  color: var(--h-fg);
+  background: var(--h-hover);
+}
+
+#model-select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2px var(--h-1);
+  border: 1px solid var(--vscode-dropdown-border, var(--h-border));
+  border-radius: var(--h-radius-sm);
+  background: var(--vscode-dropdown-background, var(--h-surface));
+  color: var(--vscode-dropdown-foreground, var(--h-fg));
+  font-size: var(--h-fs-sm);
+}
+
+#cwd-label {
+  max-width: 42%;
+  font-size: var(--h-fs-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.muted {
+  color: var(--h-muted);
+}
+
+/* ── 消息区 ───────────────────────────────────────────────── */
+#transcript {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--h-3) var(--h-2) var(--h-1);
+  scrollbar-width: thin;
+}
+
+.item {
+  margin-bottom: var(--h-3);
+}
+
+.item:last-child {
+  margin-bottom: var(--h-1);
+}
+
+.empty {
+  margin: 44px var(--h-3) 0;
+  text-align: center;
+  line-height: 1.9;
+}
+
+.empty-title {
+  margin: 0 0 var(--h-2);
+  font-size: var(--h-fs-lg);
+  font-weight: 600;
+}
+
+.empty kbd {
+  display: inline-block;
+  margin: 0 1px;
+  padding: 0 5px;
+  border: 1px solid var(--h-border);
+  border-bottom-width: 2px;
+  border-radius: var(--h-radius-sm);
+  color: var(--h-fg);
+  font-family: var(--h-mono);
+  font-size: var(--h-fs-xs);
+}
+
+/* 用户消息 */
+.item.user {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.item.user .bubble {
+  max-width: 88%;
+  padding: 7px 10px;
+  border: 1px solid var(--h-border);
+  border-radius: 10px 10px 2px 10px;
+  background: var(--vscode-inputValidation-infoBackground, rgba(77, 170, 252, 0.14));
+  font-size: var(--h-fs-md);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 助手消息：一个克制的角色行，给长对话视觉锚点 */
+.msg-head {
+  display: flex;
+  align-items: center;
+  gap: var(--h-1);
+  min-height: 18px;
+  margin-bottom: 2px;
+}
+
+.role {
+  font-size: var(--h-fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--h-muted);
+}
+
+.item.assistant .md,
+.item.notice .md {
+  font-size: var(--h-fs-md);
+  line-height: 1.68;
+  word-break: break-word;
+}
+
+.item.assistant .md > :first-child {
+  margin-top: 0;
+}
+
+.item.assistant .md p {
+  margin: 0 0 var(--h-2);
+}
+
+.item.assistant .md p:last-child {
+  margin-bottom: 0;
+}
+
+.item.assistant .md h1,
+.item.assistant .md h2,
+.item.assistant .md h3,
+.item.assistant .md h4 {
+  margin: var(--h-3) 0 var(--h-1);
+  font-size: var(--h-fs-lg);
+  line-height: 1.4;
+}
+
+.item .md ul,
+.item .md ol {
+  margin: var(--h-1) 0 var(--h-2);
+  padding-left: var(--h-4);
+}
+
+.item .md li {
+  margin-bottom: 2px;
+}
+
+.item .md code {
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--h-surface-2);
+  font-family: var(--h-mono);
+  font-size: 0.92em;
+}
+
+.item .md blockquote {
+  margin: var(--h-2) 0;
+  padding: 2px 0 2px 10px;
+  border-left: 2px solid var(--h-border-strong);
+  color: var(--h-muted);
+}
+
+.item .md hr {
+  margin: var(--h-3) 0;
+  border: none;
+  border-top: 1px solid var(--h-border);
+}
+
+.item .md a {
+  color: var(--h-accent);
+}
+
+/* 代码块 */
+.code-block {
+  margin: var(--h-2) 0;
+  border: 1px solid var(--h-border);
+  border-radius: var(--h-radius);
+  overflow: hidden;
+  background: var(--h-surface-2);
+}
+
+.code-block .code-head {
+  padding: 2px var(--h-2);
+  border-bottom: 1px solid var(--h-border);
+  color: var(--h-muted);
+  font-family: var(--h-mono);
+  font-size: var(--h-fs-xs);
+}
+
+.code-block pre {
+  margin: 0;
+  padding: var(--h-2);
+  overflow-x: auto;
+}
+
+.code-block code {
+  padding: 0;
+  background: none;
+  font-family: var(--h-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+/* 语法着色的 token —— 优先用主题自带的前景色变量（浅色主题下也不会糊成一片），
+ * 变量名不存在时回落到 Dark+ 的配色。
+ * 教训：原来只上色 4 种 token，且注释用了 descriptionForeground（Dark Modern 里
+ * 本身就是灰 #9d9d9d）—— C 代码里满屏的类型、函数名、宏全落到默认灰，
+ * 整块代码就是"一片灰、没法读"。 */
+.tok-com {
+  color: var(--vscode-charts-green, #6a9955);
+  font-style: italic;
+}
+
+.tok-pre {
+  color: var(--vscode-symbolIcon-keywordForeground, #569cd6);
+}
+
+.tok-str {
+  color: var(--vscode-debugTokenExpression-string, #ce9178);
+}
+
+.tok-num {
+  color: var(--vscode-debugTokenExpression-number, #b5cea8);
+}
+
+.tok-kw {
+  color: var(--vscode-symbolIcon-keywordForeground, #569cd6);
+}
+
+.tok-type {
+  color: var(--vscode-symbolIcon-classForeground, #4ec9b0);
+}
+
+.tok-fn {
+  color: var(--vscode-symbolIcon-functionForeground, #dcdcaa);
+}
+
+.tok-mac {
+  color: var(--vscode-symbolIcon-constantForeground, #4fc1ff);
+}
+
+/* 思考过程：可折叠的小胶囊 */
+.item.thought {
+  margin-bottom: var(--h-2);
+}
+
+.thought-head {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--h-1);
+  padding: 2px var(--h-2) 2px var(--h-1);
+  border: 1px solid var(--h-border);
+  border-radius: 10px;
+  background: var(--h-surface);
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+  cursor: pointer;
+  user-select: none;
+}
+
+.thought-head:hover {
+  color: var(--h-fg);
+}
+
+.thought-body {
+  margin-top: var(--h-1);
+  padding-left: var(--h-2);
+  border-left: 2px solid var(--h-border);
+  color: var(--h-muted);
+  font-size: var(--h-fs-sm);
+  line-height: 1.6;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* 系统提示 */
+.item.notice,
+.item.error {
+  text-align: center;
+  color: var(--h-muted);
+  font-size: var(--h-fs-sm);
+}
+
+.item.error {
+  color: var(--h-error);
+}
+
+.item.notice .md p,
+.item.error .md p {
+  margin: 0;
+}
+
+/* ── 工具卡片 ─────────────────────────────────────────────── */
+.tool-card {
+  border: 1px solid var(--h-border);
+  border-radius: var(--h-radius);
+  background: var(--h-surface);
+  overflow: hidden;
+}
+
+.tool-head {
+  display: flex;
+  align-items: center;
+  gap: var(--h-2);
+  padding: 6px var(--h-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tool-head:hover {
+  background: var(--h-hover);
+}
+
+.tool-kind {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: var(--h-surface-2);
+  color: var(--h-fg);
+  font-size: var(--h-fs-xs);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.tool-kind.edit {
+  color: var(--h-add);
+  background: color-mix(in srgb, var(--h-add) 18%, transparent);
+}
+
+.tool-kind.execute {
+  color: var(--h-warn);
+  background: color-mix(in srgb, var(--h-warn) 18%, transparent);
+}
+
+.tool-kind.read {
+  color: var(--h-accent);
+  background: color-mix(in srgb, var(--h-accent) 18%, transparent);
+}
+
+.tool-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--h-mono);
+  font-size: var(--h-fs-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tool-status {
+  flex: 0 0 auto;
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+  white-space: nowrap;
+}
+
+.tool-status.completed {
+  color: var(--h-add);
+}
+
+.tool-status.failed {
+  color: var(--h-error);
+}
+
+.tool-status.running,
+.tool-status.pending {
+  color: var(--h-warn);
+}
+
+.tool-status.pending {
+  font-weight: 600;
+}
+
+.tool-body {
+  padding: var(--h-2);
+  border-top: 1px solid var(--h-border);
+  max-height: 340px;
+  overflow: auto;
+}
+
+.tool-out {
+  margin: 0;
+  font-family: var(--h-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 工具回执里的 `- **键:** 值`：拆成键值行，别把 markdown 原文糊上去 */
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1px var(--h-2);
+  margin: 0 0 var(--h-2);
+  font-size: var(--h-fs-sm);
+}
+
+.kv:last-child {
+  margin-bottom: 0;
+}
+
+.kv .k {
+  color: var(--h-muted);
+  white-space: nowrap;
+}
+
+.kv .v {
+  font-family: var(--h-mono);
+  word-break: break-word;
+}
+
+.tool-loc {
+  display: inline-block;
+  margin: 2px 6px 0 0;
+  color: var(--h-accent);
+  font-size: var(--h-fs-xs);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ── diff ─────────────────────────────────────────────────── */
+.tool-diff {
+  margin: var(--h-1) 0;
+  border: 1px solid var(--h-border);
+  border-radius: var(--h-radius-sm);
+  overflow: hidden;
+}
+
+.tool-diff:first-child {
+  margin-top: 0;
+}
+
+.diff-head {
+  display: flex;
+  align-items: center;
+  gap: var(--h-2);
+  padding: 3px var(--h-2);
+  border-bottom: 1px solid var(--h-border);
+  background: var(--h-surface-2);
+  font-size: var(--h-fs-xs);
+}
+
+.diff-head .path {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--h-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  /* 长路径优先保住文件名那一头 */
+  direction: rtl;
+  text-align: left;
+}
+
+.diff-stat {
+  flex: 0 0 auto;
+  font-family: var(--h-mono);
+}
+
+.d-add-stat {
+  color: var(--h-add);
+}
+
+.d-del-stat {
+  color: var(--h-del);
+}
+
+.diff-body {
+  max-height: 320px;
+  overflow: auto;
+  font-family: var(--h-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.d-row {
+  display: flex;
+  gap: var(--h-2);
+  padding: 0 var(--h-2) 0 var(--h-1);
+  border-left: 2px solid transparent;
+}
+
+.d-row.d-add {
+  border-left-color: var(--h-add);
+  background: color-mix(in srgb, var(--h-add) 15%, transparent);
+}
+
+.d-row.d-del {
+  border-left-color: var(--h-del);
+  background: color-mix(in srgb, var(--h-del) 15%, transparent);
+}
+
+.d-no {
+  flex: 0 0 26px;
+  color: var(--h-muted);
+  font-size: 11.5px;
+  text-align: right;
+  opacity: 0.75;
+  user-select: none;
+}
+
+.d-sign {
+  flex: 0 0 8px;
+  color: var(--h-muted);
+}
+
+.d-row.d-add .d-sign {
+  color: var(--h-add);
+}
+
+.d-row.d-del .d-sign {
+  color: var(--h-del);
+}
+
+.d-txt {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── 审批卡 ───────────────────────────────────────────────── */
+.item.approval .tool-card {
+  border-color: var(--h-warn);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--h-warn) 35%, transparent);
+}
+
+.item.approval .tool-head {
+  background: color-mix(in srgb, var(--h-warn) 14%, transparent);
+  cursor: default;
+}
+
+.item.approval .tool-kind {
+  color: #1f1f1f;
+  background: var(--h-warn);
+}
+
+.approval-actions {
+  display: flex;
+  gap: var(--h-2);
+  padding: var(--h-2);
+  border-top: 1px solid var(--h-border);
+}
+
+.approval-actions button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 5px var(--h-2);
+  border: 1px solid var(--h-border-strong);
+  border-radius: var(--h-radius-sm);
+  background: transparent;
+  color: var(--h-fg);
+  font-family: inherit;
+  font-size: var(--h-fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.approval-actions button.primary {
+  border-color: var(--vscode-button-background, #0078d4);
+  background: var(--vscode-button-background, #0078d4);
+  color: var(--vscode-button-foreground, #ffffff);
+}
+
+.approval-actions button.primary:hover {
+  background: var(--vscode-button-hoverBackground, #026ec1);
+}
+
+.approval-actions button.danger {
+  border-color: var(--h-error);
+  color: var(--h-error);
+}
+
+.approval-actions button.danger:hover {
+  background: color-mix(in srgb, var(--h-error) 16%, transparent);
+}
+
+.approval-actions button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.approval-actions button.chosen {
+  outline: 2px solid var(--h-accent);
+  outline-offset: -2px;
+}
+
+.resolved-note {
+  padding: var(--h-1) var(--h-2);
+  border-top: 1px solid var(--h-border);
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+}
+
+/* ── 底部 ─────────────────────────────────────────────────── */
+#ftr {
+  flex: 0 0 auto;
+  padding: var(--h-2);
+  border-top: 1px solid var(--h-border);
+}
+
+#usage-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--h-2);
+  margin-bottom: 6px;
+}
+
+#usage-bar {
+  flex: 1 1 auto;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--h-border);
+  overflow: hidden;
+}
+
+#usage-fill {
+  width: 0;
+  height: 100%;
+  background: var(--h-accent);
+  transition: width 0.25s ease;
+}
+
+#usage-text {
+  flex: 0 0 auto;
+  font-size: var(--h-fs-xs);
+  white-space: nowrap;
+}
+
+#composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--h-2);
+}
+
+#input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 32px;
+  max-height: 60vh;
+  padding: 6px var(--h-2);
+  border: 1px solid var(--vscode-input-border, var(--h-border));
+  border-radius: var(--h-radius);
+  background: var(--vscode-input-background, var(--h-surface));
+  color: var(--vscode-input-foreground, var(--h-fg));
+  font-family: inherit;
+  font-size: var(--h-fs-md);
+  line-height: 1.55;
+  resize: none;
+  overflow-y: hidden;
+}
+
+#input::placeholder {
+  color: var(--h-muted);
+}
+
+#input:focus {
+  outline: none;
+  border-color: var(--vscode-focusBorder, var(--h-accent));
+}
+
+.composer-side {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--h-1);
+}
+
+.send-btn {
+  min-width: 58px;
+  padding: 6px var(--h-3);
+  border: none;
+  border-radius: var(--h-radius);
+  background: var(--vscode-button-background, #0078d4);
+  color: var(--vscode-button-foreground, #ffffff);
+  font-family: inherit;
+  font-size: var(--h-fs-md);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  background: var(--vscode-button-hoverBackground, #026ec1);
+}
+
+.send-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.mini-btn {
+  padding: 4px var(--h-2);
+  border: 1px solid var(--h-error);
+  border-radius: var(--h-radius-sm);
+  background: transparent;
+  color: var(--h-error);
+  font-family: inherit;
+  font-size: var(--h-fs-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.mini-btn:hover {
+  background: color-mix(in srgb, var(--h-error) 16%, transparent);
+}
+
+#attachment {
+  margin-top: 6px;
+  padding: 4px var(--h-2);
+  border-left: 2px solid var(--h-accent);
+  background: var(--h-surface);
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+  max-height: 84px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ── 浮层 ─────────────────────────────────────────────────── */
+.popover {
+  position: fixed;
+  top: 44px;
+  right: var(--h-2);
+  z-index: 30;
+  width: min(310px, calc(100vw - 16px));
+  max-height: 55vh;
+  padding: var(--h-1);
+  border: 1px solid var(--h-border-strong);
+  border-radius: var(--h-radius);
+  background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
+}
+
+.popover-title {
+  padding: var(--h-1) var(--h-2);
+  margin-bottom: var(--h-1);
+  border-bottom: 1px solid var(--h-border);
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+}
+
+.popover-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 5px var(--h-2);
+  border-radius: var(--h-radius-sm);
+  font-size: var(--h-fs-sm);
+  cursor: pointer;
+}
+
+.popover-item:hover {
+  background: var(--vscode-list-hoverBackground, var(--h-hover));
+}
+
+.popover-item.current {
+  outline: 1px solid var(--h-accent);
+  outline-offset: -1px;
+}
+
+.cmd-name {
+  font-family: var(--h-mono);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Codex 风格覆盖层
+   参考实拍：极暗扁平、几乎无边框、大量留白；
+   空态就是「最近的会话」列表，输入区是一张大的圆角卡片、控件都在卡片内部。
+   放在最后，靠同优先级后者胜出来覆盖上面的旧规则。
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --cx-gap: 12px;
+  --cx-radius-lg: 14px;
+  --cx-radius-md: 10px;
+  --cx-fg-soft: var(--vscode-foreground);
+}
+
+/* 顶栏：左标题 + 右幽灵图标，不要分隔线 */
+#hdr {
+  padding: 10px 10px 6px;
+  border-bottom: none;
+}
+
+.hdr-title {
+  font-size: var(--h-fs-md);
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.icon-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.85;
+}
+
+/* 状态点缩成一个小圆点，不再抢视线 */
+.dot {
+  width: 7px;
+  height: 7px;
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+#status-text {
+  font-size: var(--h-fs-xs);
+}
+
+/* 会话区：扁平、无边框、留白大 */
+#transcript {
+  padding: 14px 14px 6px;
+}
+
+.item {
+  margin-bottom: 14px;
+}
+
+.item.user .bubble {
+  border: none;
+  background: var(--vscode-input-background, rgba(128, 128, 128, 0.14));
+  padding: 8px 12px;
+  border-radius: 12px 12px 3px 12px;
+}
+
+/* 工具卡片：去掉底色，只留一条细边框 */
+.tool-card {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--h-border) 70%, transparent);
+}
+
+/* ── 空态 = 最近会话列表（Codex 的首页） ───────────────────────────── */
+#home {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 2px 0;
+  overflow-y: auto;
+}
+
+.home-list {
+  flex: 0 0 auto;
+}
+
+.home-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--cx-radius-md);
+  cursor: pointer;
+}
+
+.home-row:hover {
+  background: var(--vscode-list-hoverBackground, rgba(128, 128, 128, 0.14));
+}
+
+.home-row .t {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--h-fs-md);
+  color: var(--cx-fg-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-row .when {
+  flex: 0 0 auto;
+  font-size: var(--h-fs-sm);
+  color: var(--h-muted);
+}
+
+.home-more {
+  padding: 9px 10px;
+  /* 比会话行更弱一档，否则看着像列表里的第 4 条 */
+  font-size: var(--h-fs-sm);
+  color: var(--h-muted);
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.home-more:hover {
+  color: var(--cx-fg-soft);
+}
+
+.home-row.current .t::after {
+  content: ' · 当前';
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+}
+
+/* 居中的大图标（Codex 首页中间那个） */
+.home-art {
+  flex: 1 1 auto;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+.home-art svg {
+  width: 72px;
+  height: 72px;
+  fill: none;
+  stroke: var(--h-muted);
+  stroke-width: 1.6;
+}
+
+/* ── 输入区：一张大圆角卡片，控件都在卡片里 ────────────────────────── */
+#ftr {
+  padding: 8px 12px 12px;
+  border-top: none;
+}
+
+#composer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px 8px;
+  border: 1px solid color-mix(in srgb, var(--h-border) 85%, transparent);
+  border-radius: var(--cx-radius-lg);
+  background: var(--vscode-input-background, rgba(128, 128, 128, 0.08));
+}
+
+#composer-card:focus-within {
+  border-color: var(--vscode-focusBorder, var(--h-accent));
+}
+
+#input {
+  width: 100%;
+  min-height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: var(--h-fs-md);
+}
+
+#input:focus {
+  outline: none;
+  border: none;
+}
+
+.composer-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.composer-row .spacer {
+  flex: 1 1 auto;
+}
+
+/* 卡片里的小控件：扁、无边框、hover 才亮 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  max-width: 46%;
+  padding: 2px 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--h-muted);
+  font-family: inherit;
+  font-size: var(--h-fs-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: var(--h-hover);
+  color: var(--cx-fg-soft);
+}
+
+/* 现在没有原生 <select> 了（模式/模型都换成自家下拉），
+   原来的 select.chip / select.chip option 规则一起删掉，免得留死代码 */
+
+.chip.warn {
+  color: var(--h-warn);
+}
+
+/* 旧 CSS 里 #model-select 是**按 ID**写的（border + 背景 + 圆角）—— ID 优先级高于
+   .chip 类，所以模型下拉一直挂着那个旧胶囊框，光改 .chip 永远改不掉。
+   对照：#mode-select 是新增的 id、没有旧规则，同样一套 .chip 就干净得多。 */
+#model-select {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 2px 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: color-mix(in srgb, var(--vscode-foreground) 72%, transparent);
+}
+
+#model-select:hover {
+  background: var(--h-hover);
+  color: var(--vscode-foreground);
+}
+
+/* 卡片里的小控件别拿 muted 当常态色：深色底上细线图标会糊成一块脏点。
+   实拍反馈两轮：「这个 + 号看着脏」→「加号改为白色」。
+   但**不能写死 #fff** —— 浅色主题下白底白字直接消失；跟着主题前景色走才对。 */
+.chip {
+  color: color-mix(in srgb, var(--vscode-foreground) 88%, transparent);
+}
+
+#btn-context {
+  color: var(--vscode-icon-foreground, var(--vscode-foreground));
+}
+
+/* svg 的 fill 必须显式跟着 color 走：不给就是 SVG 默认的黑色 */
+#btn-context svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.chip.warn {
+  color: var(--h-warn);
+}
+
+/* 圆形发送按钮（Codex 右下角那个 ↑）：要有可见的圆底，否则在深色卡片上就是一支
+   悬空的箭头。踩过的坑：--vscode-button-secondaryBackground 在 Dark Modern 里
+   几乎等于卡片底色，拿它当底色等于把按钮的存在感改没了。 */
+.send-circle {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vscode-foreground) 16%, transparent);
+  color: var(--vscode-foreground);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-circle svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.send-circle:hover {
+  background: var(--vscode-button-background, #0078d4);
+  color: var(--vscode-button-foreground, #fff);
+}
+
+.send-circle:disabled {
+  background: color-mix(in srgb, var(--vscode-foreground) 8%, transparent);
+  color: var(--h-muted);
+  cursor: default;
+}
+
+/* 用量条压细，挪到卡片上方、不抢视线 */
+#usage-wrap {
+  margin-bottom: 4px;
+}
+
+#usage-bar {
+  height: 2px;
+}
+
+.popover {
+  top: 42px;
+  border-radius: var(--cx-radius-md);
+}
+
+.popover-item {
+  border-radius: 8px;
+}
+
+/* ── 「+」菜单（对齐 Codex 的 + 下拉：添加 / 插件 两段） ─────────────── */
+.popover.menu {
+  /* 菜单要贴着「+」出现（在输入卡片上方），不能像会话列表那样挂在顶栏下面 */
+  top: auto;
+  bottom: 88px;
+  left: 8px;
+  right: 8px;
+  min-width: 0;
+  padding: 6px;
+  max-height: 62vh;
+  overflow-y: auto;
+}
+
+.menu-section {
+  padding: 8px 10px 4px;
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+  letter-spacing: 0.02em;
+}
+
+.menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: var(--vscode-list-hoverBackground, var(--h-hover));
+}
+
+.menu-icon {
+  flex: 0 0 auto;
+  width: 16px;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+  /* emoji 在深色底上本身就够亮，压一点免得比文字还抢 */
+  opacity: 0.9;
+}
+
+.menu-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.menu-label {
+  font-size: var(--h-fs-md);
+  color: var(--vscode-foreground);
+}
+
+.menu-sub {
+  font-size: var(--h-fs-xs);
+  color: var(--h-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.menu-check {
+  flex: 0 0 auto;
+  color: var(--h-accent);
+  font-size: var(--h-fs-sm);
+}
+
+/* 模型下拉顶上的过滤框：103 个模型不搜就是一个没法用的长条 */
+.menu-search {
+  width: calc(100% - 12px);
+  margin: 2px 6px 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--h-border);
+  border-radius: 6px;
+  background: var(--vscode-input-background, transparent);
+  color: var(--vscode-input-foreground, var(--vscode-foreground));
+  font-family: inherit;
+  font-size: var(--h-fs-sm);
+}
+
+.menu-search:focus {
+  outline: none;
+  border-color: var(--h-accent);
+}
+
+.menu-list {
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.menu-more {
+  padding: 6px 10px;
+  color: var(--h-muted);
+  font-size: var(--h-fs-xs);
+}
+
+/* 非默认审批模式：用强调色提醒，不要警告橙（那不是错误） */
+.chip.active {
+  color: var(--h-accent);
+}
+
+/* 已开启的开关型菜单项：给个淡色底，一眼看出是"开着"的 */
+.menu-item.checked .menu-label {
+  color: var(--h-accent);
+}
+
+/* ── 绘图浮层 ─────────────────────────────────────────────────────── */
+#sketch {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: color-mix(in srgb, var(--vscode-editor-background) 70%, transparent);
+}
+
+.sketch-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--h-border);
+  border-radius: var(--cx-radius-lg);
+  background: var(--vscode-editor-background, #1f1f1f);
+}
+
+.sketch-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--h-fs-sm);
+}
+
+.sketch-head .muted {
+  font-size: var(--h-fs-xs);
+}
+
+#sketch-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  border: 1px solid var(--h-border);
+  border-radius: var(--cx-radius-md);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.sketch-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 输入卡片里的状态条：目标 / 计划模式 生效时必须看得见，也要能点掉 */
+.composer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip.state {
+  max-width: 100%;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vscode-foreground) 10%, transparent);
+  color: color-mix(in srgb, var(--vscode-foreground) 82%, transparent);
+  font-size: var(--h-fs-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip.state:hover {
+  background: color-mix(in srgb, var(--vscode-foreground) 18%, transparent);
+  color: var(--vscode-foreground);
+}
+
+.mini-btn.primary {
+  border-color: transparent;
+  background: var(--vscode-button-background, #0078d4);
+  color: var(--vscode-button-foreground, #fff);
+}

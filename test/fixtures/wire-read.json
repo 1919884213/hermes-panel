@@ -1,0 +1,1407 @@
+{
+ "events": [
+  {
+   "kind": "update",
+   "data": {
+    "availableCommands": [
+     {
+      "description": "List available commands",
+      "name": "help"
+     },
+     {
+      "description": "Show current model and provider, or switch models",
+      "input": {
+       "hint": "model name to switch to"
+      },
+      "name": "model"
+     },
+     {
+      "description": "List available tools with descriptions",
+      "name": "tools"
+     },
+     {
+      "description": "Show conversation message counts by role",
+      "name": "context"
+     },
+     {
+      "description": "Clear conversation history",
+      "name": "reset"
+     },
+     {
+      "description": "Compress conversation context",
+      "name": "compress"
+     },
+     {
+      "description": "Inject guidance into the currently running agent turn",
+      "input": {
+       "hint": "guidance for the active turn"
+      },
+      "name": "steer"
+     },
+     {
+      "description": "Queue a prompt to run after the current turn finishes",
+      "input": {
+       "hint": "prompt to run next"
+      },
+      "name": "queue"
+     },
+     {
+      "description": "Show Hermes version",
+      "name": "version"
+     }
+    ],
+    "sessionUpdate": "available_commands_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "size": 1000000,
+    "used": 9130,
+    "sessionUpdate": "usage_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "_meta": {
+     "hermes": {
+      "sessionProvenance": {
+       "acpSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "currentHermesSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "rootHermesSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "parentHermesSessionId": null,
+       "sessionKind": "root",
+       "compressionDepth": 0
+      }
+     }
+    },
+    "title": "用 read_file 工具读取 acp_probe.py 的前 3 行，然后只把那 3…",
+    "updatedAt": "2026-09-21T03:10:01.865476+00:00",
+    "sessionUpdate": "session_info_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "The",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " user",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "_meta": {
+     "hermes": {
+      "sessionProvenance": {
+       "acpSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "currentHermesSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "rootHermesSessionId": "7f50d2c9-2c1a-4c57-855f-3a7d16822ec8",
+       "parentHermesSessionId": null,
+       "sessionKind": "root",
+       "compressionDepth": 0
+      }
+     }
+    },
+    "title": "读取 acp_probe.py 前 3 行",
+    "updatedAt": "2026-09-21T03:10:04.372112+00:00",
+    "sessionUpdate": "session_info_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " wants",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ac",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_pro",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "be",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".py",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'s",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " first",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "3",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " lines",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Let",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " check",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " the",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " working",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " directory",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Let",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " find",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " the",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " file",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " first",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "8dd22ce1-142c-45ba-b9de-ce81727c999a",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "Searching for 'acp_probe.py' (files) in D:\\APP\\hermes\\cache\\scratch",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "search",
+    "locations": [
+     {
+      "path": "D:\\APP\\hermes\\cache\\scratch"
+     }
+    ],
+    "title": "search_files: acp_probe.py",
+    "toolCallId": "tc-736de6cdc84b",
+    "sessionUpdate": "tool_call"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "kind": "read",
+    "locations": [
+     {
+      "path": "D:\\APP\\hermes\\cache\\scratch\\acp_probe.py"
+     }
+    ],
+    "title": "read_file: acp_probe.py",
+    "toolCallId": "tc-1fa0256d52a4",
+    "sessionUpdate": "tool_call"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "File search results\nFound 1 file; showing 1.\n\n- D:\\APP\\hermes\\cache\\scratch\\acp_probe.py",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "search",
+    "status": "completed",
+    "toolCallId": "tc-736de6cdc84b",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "Read D:\\APP\\hermes\\cache\\scratch\\acp_probe.py (limit 3) — 164 total lines\n\n```````````\n1|#!/usr/bin/env python3\n2|\"\"\"Probe v2: speak raw ACP to `hermes acp`, dump ALL wire messages to JSONL.\n3|\n```````````",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "read",
+    "status": "completed",
+    "toolCallId": "tc-1fa0256d52a4",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\n\n文件",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "存在",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "前",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "3",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "行",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "如下",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "：\n\n",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "```\n",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "#!/",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "usr",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "/bin",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "/env",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " python",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "3",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\n",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\"\"\"",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Pro",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "be",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " v",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "2",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " speak",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " raw",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " A",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "CP",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " `",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "her",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mes",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ac",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`,",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " dump",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ALL",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " wire",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " messages",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " JSON",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "L",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "```\n\n",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "第",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "3",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "行",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "是",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "空",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "行",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "（",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "文件",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "共",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "164",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "行",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "D",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":\\",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "APP",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "her",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mes",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "cache",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "scr",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "atch",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ac",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_pro",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "be",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".py",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "）。",
+     "type": "text"
+    },
+    "messageId": "245e0327-9152-4f13-9e09-381909da755b",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "size": 1000000,
+    "used": 20962,
+    "sessionUpdate": "usage_update"
+   }
+  }
+ ]
+}

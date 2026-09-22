@@ -1,0 +1,4493 @@
+{
+ "events": [
+  {
+   "kind": "update",
+   "data": {
+    "availableCommands": [
+     {
+      "description": "List available commands",
+      "name": "help"
+     },
+     {
+      "description": "Show current model and provider, or switch models",
+      "input": {
+       "hint": "model name to switch to"
+      },
+      "name": "model"
+     },
+     {
+      "description": "List available tools with descriptions",
+      "name": "tools"
+     },
+     {
+      "description": "Show conversation message counts by role",
+      "name": "context"
+     },
+     {
+      "description": "Clear conversation history",
+      "name": "reset"
+     },
+     {
+      "description": "Compress conversation context",
+      "name": "compress"
+     },
+     {
+      "description": "Inject guidance into the currently running agent turn",
+      "input": {
+       "hint": "guidance for the active turn"
+      },
+      "name": "steer"
+     },
+     {
+      "description": "Queue a prompt to run after the current turn finishes",
+      "input": {
+       "hint": "prompt to run next"
+      },
+      "name": "queue"
+     },
+     {
+      "description": "Show Hermes version",
+      "name": "version"
+     }
+    ],
+    "sessionUpdate": "available_commands_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "size": 1000000,
+    "used": 9130,
+    "sessionUpdate": "usage_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "_meta": {
+     "hermes": {
+      "sessionProvenance": {
+       "acpSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "currentHermesSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "rootHermesSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "parentHermesSessionId": null,
+       "sessionKind": "root",
+       "compressionDepth": 0
+      }
+     }
+    },
+    "title": "在工作目录用 write_file 创建 acp_write_test.txt，内容写…",
+    "updatedAt": "2026-09-21T03:10:23.376086+00:00",
+    "sessionUpdate": "session_info_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Simple",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " task",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " create",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " with",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " then",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " run",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " echo",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " done",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Let",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " do",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " both",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " They",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'re",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " independent",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "-ish",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " but",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " both",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " simple",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Actually",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " they",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " can",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " be",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " bat",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ched",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " —",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " and",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " echo",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " done",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " are",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " independent",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Working",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " dir",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " D",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":\\",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "APP",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "her",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mes",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "cache",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "scr",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "atch",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "But",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " I",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " need",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " the",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " back",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "?",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " The",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " instruction",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " says",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " verify",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " writes",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " external",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " systems",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Internal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " edits",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " confirmed",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " by",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " are",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " fine",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Let",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " just",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " do",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " then",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " cat",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "...",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " no",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " can",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'t",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " use",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " cat",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " I",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " can",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " use",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " verify",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Let",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'s",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " batch",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " +",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " echo",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " done",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " then",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " to",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " confirm",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " content",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Actually",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " batch",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " all",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " three",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "?",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " depends",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " on",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " completing",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Sa",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "fer",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " +",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " in",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " one",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " turn",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " then",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " But",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " result",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " returns",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " verified",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "true",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Still",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " a",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " quick",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " check",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " is",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " cheap",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Let",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " me",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " batch",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " and",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " first",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "_meta": {
+     "hermes": {
+      "sessionProvenance": {
+       "acpSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "currentHermesSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "rootHermesSessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+       "parentHermesSessionId": null,
+       "sessionKind": "root",
+       "compressionDepth": 0
+      }
+     }
+    },
+    "title": "用 write_file 创建 acp_write_test.txt 并测试终端",
+    "updatedAt": "2026-09-21T03:10:26.743928+00:00",
+    "sessionUpdate": "session_info_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "H",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mm",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " actually",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " I",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " can",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " batch",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " all",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " three",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " in",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " one",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " turn",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " —",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " the",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " runtime",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " executes",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " them",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ";",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " might",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " run",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " concurrently",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " before",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Ris",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ky",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " Do",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " write",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " +",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " together",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " then",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".\n\n",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Actually",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ",",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " can",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " verify",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " content",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " with",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " a",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " command",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " too",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " But",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " guidance",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " says",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " don",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'t",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " use",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " cat",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " in",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " terminal",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " I",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "'ll",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " use",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " read",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " in",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " a",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " second",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " turn",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "187491f3-314b-4e65-b35c-e44e978ae9a2",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "Preparing write to D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt. Approval prompt shows the diff.",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "edit",
+    "locations": [
+     {
+      "path": "D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt"
+     }
+    ],
+    "title": "write_file: D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt",
+    "toolCallId": "tc-41357dba59cf",
+    "sessionUpdate": "tool_call"
+   }
+  },
+  {
+   "kind": "permission",
+   "data": {
+    "options": [
+     {
+      "kind": "allow_once",
+      "name": "Allow edit",
+      "optionId": "allow_once"
+     },
+     {
+      "kind": "reject_once",
+      "name": "Deny",
+      "optionId": "deny"
+     }
+    ],
+    "sessionId": "22492c79-c761-440f-aeee-00157aa2132c",
+    "toolCall": {
+     "content": [
+      {
+       "newText": "hello from acp\n",
+       "path": "D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt",
+       "type": "diff"
+      }
+     ],
+     "kind": "edit",
+     "rawInput": {
+      "tool": "write_file",
+      "arguments": {
+       "path": "D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt",
+       "content": "hello from acp\n"
+      }
+     },
+     "status": "pending",
+     "title": "Approve edit: D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt",
+     "toolCallId": "edit-approval-1"
+    }
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "status": "completed",
+    "toolCallId": "edit-approval-1",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "✅ write_file completed for `D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt`\nFiles: `D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt`",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "edit",
+    "status": "completed",
+    "toolCallId": "tc-41357dba59cf",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "$ echo done",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "execute",
+    "locations": [],
+    "title": "terminal: echo done",
+    "toolCallId": "tc-a23abd6a7006",
+    "sessionUpdate": "tool_call"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "terminal result\n- **output:** done\n- **exit_code:** 0",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "execute",
+    "status": "completed",
+    "toolCallId": "tc-a23abd6a7006",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "Verify",
+     "type": "text"
+    },
+    "messageId": "67b1b2b8-70fe-4515-832b-d78032775031",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " by",
+     "type": "text"
+    },
+    "messageId": "67b1b2b8-70fe-4515-832b-d78032775031",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " reading",
+     "type": "text"
+    },
+    "messageId": "67b1b2b8-70fe-4515-832b-d78032775031",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " back",
+     "type": "text"
+    },
+    "messageId": "67b1b2b8-70fe-4515-832b-d78032775031",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "67b1b2b8-70fe-4515-832b-d78032775031",
+    "sessionUpdate": "agent_thought_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "kind": "read",
+    "locations": [
+     {
+      "path": "D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt"
+     }
+    ],
+    "title": "read_file: acp_write_test.txt",
+    "toolCallId": "tc-8d8dbf555778",
+    "sessionUpdate": "tool_call"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": [
+     {
+      "content": {
+       "text": "Read D:\\APP\\hermes\\cache\\scratch\\acp_write_test.txt — 1 total lines\n\n```\n1|hello from acp\n```",
+       "type": "text"
+      },
+      "type": "content"
+     }
+    ],
+    "kind": "read",
+    "status": "completed",
+    "toolCallId": "tc-8d8dbf555778",
+    "sessionUpdate": "tool_call_update"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\n\n工具",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "链",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "两条",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "都",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "通",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "：\n\n",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "1",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " **",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "write",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_file",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "**",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " →",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " `",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "D",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "APP",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "her",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mes",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "cache",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "scr",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "atch",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ac",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_write",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_test",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".txt",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "写入",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "15",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "字节",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "回",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "读",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "确认",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "内容",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "正是",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " `",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "hello",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " from",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ac",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "。\n",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "2",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " **",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "terminal",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "**",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " →",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " `",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "echo",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " done",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "输出",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " `",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "done",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "exit",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " code",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "0",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "shell",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "（",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "git",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "-b",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ash",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "）",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "正常",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "。\n\n",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "文件",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "落地",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "路径",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "：",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "D",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ":\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "APP",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "her",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "mes",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "cache",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "scr",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "atch",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "\\",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "ac",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "p",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_write",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "_test",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": ".txt",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "`",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "（",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "属",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " scratch",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "临时",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "区",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "72",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": " ",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "小时后",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "会被",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "清理",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "，",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "不用",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "当",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "正式",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "交付",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "物",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "存档",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "content": {
+     "text": "）。",
+     "type": "text"
+    },
+    "messageId": "098739b3-d0fc-4350-b7df-ddc8d27db357",
+    "sessionUpdate": "agent_message_chunk"
+   }
+  },
+  {
+   "kind": "update",
+   "data": {
+    "size": 1000000,
+    "used": 21462,
+    "sessionUpdate": "usage_update"
+   }
+  }
+ ]
+}

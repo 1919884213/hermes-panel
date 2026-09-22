@@ -1,0 +1,7 @@
+node_modules/
+out/
+*.vsix
+*.orig-backup
+*.tsbuildinfo
+.DS_Store
+Thumbs.db

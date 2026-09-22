@@ -1,0 +1,39 @@
+diff --git a/acp_adapter/session.py b/acp_adapter/session.py
+index 0508ba0eed..5bee3ae00b 100644
+--- a/acp_adapter/session.py
++++ b/acp_adapter/session.py
+@@ -207,7 +207,10 @@ class SessionManager:
+         db = self._get_db()
+         persisted_rows: dict[str, dict[str, Any]] = {}
+         try:
+-            for row in (db.list_sessions_rich(source="acp", limit=1000) if db is not None else ()):
++            # 打通与 desktop / CLI 的会话同步：这里原本硬编码 source="acp"，导致编辑器面板
++            # 只能看到它自己创建的会话。改成与网关 session.list 一致的策略 —— 只屏蔽内部
++            # tool 源（子 agent 跑出来的噪音会话），其余来源全部放出。
++            for row in (db.list_sessions_rich(exclude_sources=["tool"], limit=1000) if db is not None else ()):
+                 persisted_rows[str(row["id"])] = dict(row)
+         except Exception:
+             logger.debug("Failed to load ACP sessions from DB", exc_info=True)
+@@ -232,7 +235,9 @@ class SessionManager:
+         # Then persisted sessions not currently in memory.
+         for sid, row in persisted_rows.items():
+             message_count = int(row.get("message_count") or 0)
+-            session_cwd = _parse_model_config(row.get("model_config")).get("cwd", ".")
++            # cwd 可能在 model_config 里（ACP 自己写进去的），也可能只落在独立的 cwd 列里
++            # （desktop / cli 等其它来源就是这种）。少读一边，跨源会话就会被 cwd 过滤静默丢掉。
++            session_cwd = _parse_model_config(row.get("model_config")).get("cwd") or row.get("cwd") or "."
+             if sid in seen_ids or message_count <= 0 or not _matches(session_cwd):
+                 continue
+             results.append(_session_info(
+@@ -351,7 +356,10 @@ class SessionManager:
+         except Exception:
+             logger.debug("Failed to query DB for ACP session %s", session_id, exc_info=True)
+             return None
+-        if row is None or row.get("source") != "acp":
++        # 同上：允许载入非 acp 来源的会话（desktop / cli / ...），只挡内部 tool 源。
++        # 载入是安全的：_persist 对已存在的会话走 update_session_meta 分支，
++        # 只更新 cwd/model，不会改写对方的 source。
++        if row is None or row.get("source") == "tool":
+             return None
+ 
+         meta = _parse_model_config(row.get("model_config"))

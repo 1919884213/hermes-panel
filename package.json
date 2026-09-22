@@ -1,0 +1,191 @@
+{
+  "name": "hermes-panel",
+  "displayName": "Hermes 面板",
+  "description": "在 VS Code 侧边栏里使用 Hermes Agent（ACP over stdio）：流式对话、工具调用卡片、文件 diff 审批、会话与模型切换。",
+  "version": "0.2.5",
+  "publisher": "hermes",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.134.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Other"
+  ],
+  "keywords": [
+    "hermes",
+    "acp",
+    "agent",
+    "ai",
+    "chat"
+  ],
+  "main": "./out/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hermesPanel",
+          "title": "Hermes",
+          "icon": "media/hermes.svg"
+        }
+      ]
+    },
+    "views": {
+      "hermesPanel": [
+        {
+          "id": "hermesPanel.chat",
+          "name": "Hermes 面板",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "hermesPanel.focus",
+        "title": "打开 Hermes 面板",
+        "category": "Hermes",
+        "icon": {
+          "light": "media/hermes-toolbar-light.svg",
+          "dark": "media/hermes-toolbar-dark.svg"
+        }
+      },
+      {
+        "command": "hermesPanel.newSession",
+        "title": "新建会话",
+        "category": "Hermes",
+        "icon": "$(add)"
+      },
+      {
+        "command": "hermesPanel.askSelection",
+        "title": "Hermes: 解释选中代码",
+        "category": "Hermes",
+        "icon": "$(book)"
+      },
+      {
+        "command": "hermesPanel.fixSelection",
+        "title": "Hermes: 修复选中代码",
+        "category": "Hermes",
+        "icon": "$(wrench)"
+      },
+      {
+        "command": "hermesPanel.reviewSelection",
+        "title": "Hermes: 审查选中代码",
+        "category": "Hermes",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "hermesPanel.askFile",
+        "title": "Hermes: 把当前文件发给 Hermes",
+        "category": "Hermes",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "hermesPanel.restart",
+        "title": "Hermes: 重启 ACP 连接",
+        "category": "Hermes",
+        "icon": "$(debug-restart)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "hermesPanel.focus",
+          "group": "navigation@9"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "hermesPanel.askSelection",
+          "when": "editorHasSelection",
+          "group": "hermes@1"
+        },
+        {
+          "command": "hermesPanel.fixSelection",
+          "when": "editorHasSelection",
+          "group": "hermes@2"
+        },
+        {
+          "command": "hermesPanel.reviewSelection",
+          "when": "editorHasSelection",
+          "group": "hermes@3"
+        },
+        {
+          "command": "hermesPanel.askFile",
+          "when": "editorTextFocus",
+          "group": "hermes@4"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "hermesPanel.newSession",
+          "when": "view == hermesPanel.chat",
+          "group": "navigation@1"
+        },
+        {
+          "command": "hermesPanel.restart",
+          "when": "view == hermesPanel.chat",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "hermesPanel.focus",
+        "key": "ctrl+alt+h",
+        "mac": "cmd+alt+h"
+      }
+    ],
+    "configuration": {
+      "title": "Hermes 面板",
+      "properties": {
+        "hermesPanel.command": {
+          "type": "string",
+          "default": "hermes",
+          "description": "Hermes 可执行文件（默认从 PATH 中查找 hermes.exe / hermes.cmd）。"
+        },
+        "hermesPanel.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "acp"
+          ],
+          "description": "传给可执行文件的参数，默认以 ACP 模式启动。"
+        },
+        "hermesPanel.autoApproveEdits": {
+          "type": "boolean",
+          "default": false,
+          "description": "自动批准文件写入/修改的审批请求（危险：等于跳过 diff 确认）。"
+        },
+        "hermesPanel.autoResume": {
+          "type": "boolean",
+          "default": true,
+          "description": "重新打开面板时自动恢复本工作区的上一个会话。"
+        },
+        "hermesPanel.maxTranscriptItems": {
+          "type": "number",
+          "default": 400,
+          "description": "面板中保留的最大消息/工具条目数，超出后丢弃最早的。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "test": "node test/run-all.js",
+    "vscode:prepublish": "npm run compile",
+    "package": "npm run compile && npx --yes @vscode/vsce package --allow-missing-repository --out hermes-panel-0.2.5.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "1.134.0",
+    "typescript": "^5.9.3"
+  }
+}
