@@ -1,4 +1,21 @@
-# Hermes 面板
+<div align="center">
+
+# hermes-panel
+
+**Hermes 面板 —— 在 VS Code 侧边栏里使用 Hermes Agent**
+
+`VS Code 1.134+` · `ACP over stdio` · `TypeScript` · `运行时依赖 0`
+
+[![VS Code](https://img.shields.io/badge/VS%20Code-%5E1.134.0-blue?style=flat-square)](#要求)
+[![Lang](https://img.shields.io/badge/Lang-TypeScript-blue?style=flat-square)](#开发)
+[![Protocol](https://img.shields.io/badge/protocol-ACP%20over%20stdio-blueviolet?style=flat-square)](#要求)
+[![Runtime](https://img.shields.io/badge/runtime-hermes%20acp-orange?style=flat-square)](#要求)
+[![Deps](https://img.shields.io/badge/runtime%20deps-0-red?style=flat-square)](#开发)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+
+</div>
+
+---
 
 在 VS Code 侧边栏里直接使用 [Hermes Agent](https://hermes-agent.nousresearch.com/docs/)。
 面板通过 **ACP（Agent Client Protocol）** 与本地 `hermes acp` 子进程通信，所以 agent 侧的能力
