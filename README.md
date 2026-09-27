@@ -93,6 +93,17 @@ npm run package      # 生成 .vsix
 测试分三层：纯模块单测（markdown 转义、diff、JSON 流解析）、用**真实抓包报文**回放状态机、
 以及真起 `hermes acp` 的端到端测试（会消耗少量模型额度，但能验到「文件真的落盘」）。
 
+## Hermes Desktop 插件（`desktop-plugins/`）
+
+同一仓库里还放了几个 Hermes **桌面端**（Electron）UI 插件，与上面的 VS Code 扩展互不相干：
+
+- **session-token-detail** — 会话 Token 详情 · 费用估算（上下文占用、分项花费、
+  可切换的价格配置文件、会话独立绑定）
+- **session-bulk-archive** — 会话批量归档（多选一次归档 / 恢复）
+
+安装：把插件目录复制到 `<HERMES_HOME>/desktop-plugins/`，再 `Ctrl/⌘K` → Reload desktop plugins。
+详见 [`desktop-plugins/README.md`](desktop-plugins/README.md)。
+
 ## 许可
 
 MIT

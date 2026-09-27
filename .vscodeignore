@@ -6,3 +6,4 @@ tsconfig.json
 package-lock.json
 **/*.vsix
 .gitignore
+desktop-plugins/**
