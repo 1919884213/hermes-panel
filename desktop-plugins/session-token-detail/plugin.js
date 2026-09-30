@@ -53,6 +53,11 @@ import {
   PopoverContent,
   PopoverTrigger,
   SegmentedControl,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Skeleton,
   atom,
   cn,
@@ -121,6 +126,9 @@ const rateOf = value => {
 }
 
 export const PRICE_KEYS = ['input', 'output', 'cacheRead', 'cacheWrite', 'request']
+
+/** 「此会话独立用」下拉里代表「跟随全局」的那一项（不能是空串，radix 的 value 不接受空）。 */
+const BIND_FOLLOW = '__follow'
 
 /** [字段, 名称 key, 提示 key, 是否按百万 token 计价] */
 const PRICE_FIELDS = [
@@ -273,7 +281,8 @@ export function parseStoredPrices(raw) {
   }
 
   // ── v2：价格配置文件（最多 MAX_PROFILES 个，每个都能改名改价）─────────────
-  // profile = { id, name, prices }。prices 就是那五项单价（每百万 tokens）。
+  // profile = { id, name, prices, tiers?, tierLock? }。prices 是「第一档/不分档」那套
+  // 五项单价；tiers 是可选的上下文分档（v3）。
   if (isRecord(raw.profiles)) {
     for (const [id, entry] of Object.entries(raw.profiles)) {
       if (!id || !isRecord(entry) || config.profiles[id]) {
@@ -281,7 +290,9 @@ export function parseStoredPrices(raw) {
       }
 
       const name = String(entry?.name ?? '').trim()
-      const prices = normalizeRates(entry?.prices)
+      const tiers = normalizeTiers(entry?.tiers)
+      // 分档时 prices 镜像第一档：任何只认 prices 的老读取路径都不会看到过期的数。
+      const prices = tiers ? tiers[0].prices : normalizeRates(entry?.prices)
 
       // 只要求有名字：价格可以暂时全 0（「新建 → 再填数」是正常操作路径，
       // 若因为还没填就把配置丢掉，用户会觉得「建了又没了」）。
@@ -289,7 +300,13 @@ export function parseStoredPrices(raw) {
         continue
       }
 
-      config.profiles[id] = { id, name: name.slice(0, 40), prices }
+      config.profiles[id] = {
+        id,
+        name: name.slice(0, 40),
+        prices,
+        ...(tiers ? { tiers } : {}),
+        tierLock: tierLockIndex({ prices, tiers, tierLock: entry?.tierLock })
+      }
     }
   } else if (raw.profiles === undefined && (hasAnyModelRate(config.byModel) || hasAnyRate(config.defaults))) {
     // v1 → v2 迁移：老落盘里根本没有 profiles 键 —— 把手填的那套（若有）收编成
@@ -381,36 +398,57 @@ export function gatewayPricesFor(payload, model) {
   return null
 }
 
-/** 纯函数：四层来源挑一个（配置文件 > 手填 > 网关价目 > 通用默认价；gateway 的价是 USD，标 usd: true）。 */
-export function resolvePrices(config, model, sessionId) {
+/**
+ * 纯函数：四层来源挑一个（配置文件 > 手填 > 网关价目 > 通用默认价；gateway 的价是 USD，标 usd: true）。
+ * 配置文件带上下文分档时，按 contextUsed（≈ 下一次请求的输入大小）选档；手动锁定优先。
+ */
+export function resolvePrices(config, model, sessionId, contextUsed) {
   // 价格配置文件优先：用户主动切换的那套价，压过一切自动来源。
   // 会话独立绑定的配置文件 > 全局激活的配置文件（profileForSession 里已排好）。
   const profile = profileForSession(config, sessionId)
+  const tiers = tiersOf(profile)
+  const lock = tierLockIndex(profile)
+  const tierIndex = lock >= 0 ? lock : tierIndexForContext(profile, contextUsed)
+  const tiered = profile ? tiers[tierIndex]?.prices ?? tiers[0].prices : null
 
-  if (profile && hasAnyRate(profile.prices)) {
-    return { at: 0, prices: normalizeRates(profile.prices), profileId: profile.id, profileName: profile.name, provider: '', source: 'profile', usd: false }
+  if (profile && hasAnyRate(tiered)) {
+    return {
+      at: 0,
+      contextUsed: finite(contextUsed),
+      prices: normalizeRates(tiered),
+      profileId: profile.id,
+      profileName: profile.name,
+      provider: '',
+      source: 'profile',
+      tierCount: tiers.length,
+      tierIndex,
+      tierLocked: lock >= 0,
+      tierMaxContext: tiers[tierIndex]?.maxContext ?? null,
+      usd: false
+    }
   }
 
+  const flat = { contextUsed: finite(contextUsed), tierCount: 1, tierIndex: 0, tierLocked: false, tierMaxContext: null }
   const manual = normalizeRates(config?.byModel?.[model])
 
   if (hasAnyRate(manual)) {
-    return { at: 0, prices: manual, profileId: '', profileName: '', provider: '', source: 'manual', usd: false }
+    return { ...flat, at: 0, prices: manual, profileId: '', profileName: '', provider: '', source: 'manual', usd: false }
   }
 
   const cached = config?.gateway?.[model]
   const gateway = normalizeRates(cached?.prices)
 
   if (cached && hasAnyRate(gateway)) {
-    return { at: cached.at ?? 0, prices: gateway, profileId: '', profileName: '', provider: cached.provider ?? '', source: 'gateway', usd: true }
+    return { ...flat, at: cached.at ?? 0, prices: gateway, profileId: '', profileName: '', provider: cached.provider ?? '', source: 'gateway', usd: true }
   }
 
   const defaults = normalizeRates(config?.defaults)
 
   if (hasAnyRate(defaults)) {
-    return { at: 0, prices: defaults, profileId: '', profileName: '', provider: '', source: 'defaults', usd: false }
+    return { ...flat, at: 0, prices: defaults, profileId: '', profileName: '', provider: '', source: 'defaults', usd: false }
   }
 
-  return { at: 0, prices: normalizeRates({}), profileId: '', profileName: '', provider: '', source: 'none', usd: false }
+  return { ...flat, at: 0, prices: normalizeRates({}), profileId: '', profileName: '', provider: '', source: 'none', usd: false }
 }
 
 /** 美元价目按汇率折成当前显示货币（手填的价按你选的货币原样用）。 */
@@ -432,19 +470,24 @@ export function convertPrices(prices, config) {
   return converted
 }
 
-/** 面板与费用引擎真正用的价格：挑来源 + 该换算就换算。 */
-export function effectivePrices(config, model, sessionId) {
-  const resolved = resolvePrices(config, model, sessionId)
+/** 面板与费用引擎真正用的价格：挑来源 + 选档 + 该换算就换算。 */
+export function effectivePrices(config, model, sessionId, contextUsed) {
+  const resolved = resolvePrices(config, model, sessionId, contextUsed)
 
   return {
     at: resolved.at,
+    contextUsed: resolved.contextUsed,
     converted: resolved.usd && config?.currency !== 'USD',
     prices: resolved.usd ? convertPrices(resolved.prices, config) : resolved.prices,
     profileId: resolved.profileId,
     profileName: resolved.profileName,
     provider: resolved.provider,
     raw: resolved.prices,
-    source: resolved.source
+    source: resolved.source,
+    tierCount: resolved.tierCount ?? 1,
+    tierIndex: resolved.tierIndex ?? 0,
+    tierLocked: Boolean(resolved.tierLocked),
+    tierMaxContext: resolved.tierMaxContext ?? null
   }
 }
 
@@ -506,7 +549,7 @@ export function newProfileId(config) {
 }
 
 /** 纯函数：新建一个配置文件（满 20 个返回原配置不动；价格可以先空着，之后再填）。 */
-export function addProfile(config, name, prices) {
+export function addProfile(config, name, prices, tiers) {
   const base = parseStoredPrices(config)
 
   if (Object.keys(base.profiles).length >= MAX_PROFILES) {
@@ -515,17 +558,21 @@ export function addProfile(config, name, prices) {
 
   const id = newProfileId(base)
   const label = String(name ?? '').trim().slice(0, 40) || `配置 ${Object.keys(base.profiles).length + 1}`
+  const clean = normalizeTiers(tiers)
+  const entry = clean
+    ? { id, name: label, prices: clean[0].prices, tierLock: -1, tiers: clean }
+    : { id, name: label, prices: normalizeRates(prices), tierLock: -1 }
 
   return {
     ...base,
     // 第一个建的自动成为激活配置，别让用户建完还得再点一下。
     activeProfile: base.activeProfile || id,
-    profiles: { ...base.profiles, [id]: { id, name: label, prices: normalizeRates(prices) } }
+    profiles: { ...base.profiles, [id]: entry }
   }
 }
 
 /** 纯函数：改配置文件的名称和/或价格（传 null / undefined 表示该字段不动）。 */
-export function updateProfile(config, id, { name, prices } = {}) {
+export function updateProfile(config, id, { name, prices, tierIndex } = {}) {
   const base = parseStoredPrices(config)
   const current = base.profiles[id]
 
@@ -534,14 +581,38 @@ export function updateProfile(config, id, { name, prices } = {}) {
   }
 
   const nextName = name === null || name === undefined ? current.name : String(name).trim().slice(0, 40)
-  const nextPrices = prices === null || prices === undefined ? current.prices : normalizeRates(prices)
 
   // 名字不能是空的（空名字的配置在解析时会被丢掉，等于白改）；价格可以全 0。
   if (!nextName) {
     return base
   }
 
-  return { ...base, profiles: { ...base.profiles, [id]: { ...current, name: nextName, prices: nextPrices } } }
+  let next = nextName === current.name ? current : { ...current, name: nextName }
+
+  if (prices !== null && prices !== undefined) {
+    // 分档的配置：写到「正在生效的那一档」（tierIndex 缺省落到第一档，**绝不**顺手
+    // 把档位删掉 —— 只改价不该改变分档结构）。
+    const wanted = finite(tierIndex)
+    const index = wanted !== null && wanted >= 0 ? Math.floor(wanted) : 0
+
+    next = next.tiers ? setTierPrices(next, index, prices) : { ...next, prices: normalizeRates(prices) }
+  }
+
+  return { ...base, profiles: { ...base.profiles, [id]: next } }
+}
+
+/** 纯函数：把某个配置换掉（mutator(profile) → profile）；id 不存在就原样返回。 */
+export function mutateProfile(config, id, mutator) {
+  const base = parseStoredPrices(config)
+  const current = base.profiles[id]
+
+  if (!current) {
+    return base
+  }
+
+  const next = mutator(current)
+
+  return next ? { ...base, profiles: { ...base.profiles, [id]: next } } : base
 }
 
 /** 纯函数：删掉一个配置文件。会话绑定与激活指针一并清干净，不留悬空引用。 */
@@ -606,25 +677,203 @@ export function profileForSession(config, sessionId) {
   return base.profiles[bound ?? ''] ?? base.profiles[base.activeProfile] ?? null
 }
 
+// ── 上下文分档（v3）────────────────────────────────────────────────────────
+// 有些模型按**输入大小**分价（价目表写成 输入 [0, 272K) 与 [272K, +∞) 两套价）。
+// 分档只挂在**价格配置文件**上：
+//   profile.tiers = [{ maxContext, prices }, …]  —— 按 maxContext 升序，最后一档
+//   maxContext = null 表示无上限（∞）；不足 2 档视为不分档。
+//   profile.tierLock = -1 自动（按当前上下文占用选档）或档位下标（手动锁定）。
+// 没有 tiers 的一律用 profile.prices —— 老数据、按模型手填、网关价、默认价都走这条。
+// 不变式：**选档只按 context_used 判断**（它 ≈ 下一次请求的输入大小），不按会话累计
+// prompt（累计值会一路涨过阈值，等于永远套高价）。
+
+/** 「加一档」的默认切点：272K（与常见价目表一致）。 */
+export const TIER_THRESHOLD_DEFAULT = 272000
+
+/** 档位数组规整：升序、按上限去重、最后一档强制无上限；不足 2 档返回 null。 */
+export function normalizeTiers(raw) {
+  if (!Array.isArray(raw)) {
+    return null
+  }
+
+  const tiers = raw
+    .filter(entry => isRecord(entry))
+    .map(entry => {
+      const maxContext = finite(entry.maxContext)
+
+      return {
+        maxContext: maxContext !== null && maxContext > 0 ? Math.round(maxContext) : null,
+        prices: normalizeRates(entry.prices)
+      }
+    })
+    .sort((a, b) => (a.maxContext ?? Infinity) - (b.maxContext ?? Infinity))
+
+  const unique = []
+
+  for (const tier of tiers) {
+    if (tier.maxContext === null || !unique.some(other => other.maxContext === tier.maxContext)) {
+      unique.push(tier)
+    }
+  }
+
+  if (unique.length < 2) {
+    return null
+  }
+
+  // 最后一档必须是 ∞：落盘里若没写，就把原来那一档当 ∞ 用（超出部分没有别的价目可依）。
+  unique[unique.length - 1].maxContext = null
+
+  return unique
+}
+
+/** 这套配置的档位；不分档时返回长度 1 的数组（价 = profile.prices）。 */
+export function tiersOf(profile) {
+  return normalizeTiers(profile?.tiers) ?? [{ maxContext: null, prices: normalizeRates(profile?.prices) }]
+}
+
+/** 手动锁定的档位下标（-1 = 自动；越界一律当自动）。 */
+export function tierLockIndex(profile) {
+  const lock = finite(profile?.tierLock)
+  const count = tiersOf(profile).length
+
+  return lock !== null && lock >= 0 && lock < count ? Math.floor(lock) : -1
+}
+
+/** 按「当前上下文占用」落在哪一档（`[0, max) 升序`）；上下文未知按第一档。 */
+export function tierIndexForContext(profile, contextUsed) {
+  const tiers = tiersOf(profile)
+  const used = finite(contextUsed)
+
+  if (used === null) {
+    return 0
+  }
+
+  for (let index = 0; index < tiers.length; index += 1) {
+    if (tiers[index].maxContext === null || used < tiers[index].maxContext) {
+      return index
+    }
+  }
+
+  return tiers.length - 1
+}
+
+/** 档位标签：`≤272k` / `>272k`（最后一档拿上一档的上限当起点）。 */
+export function tierLabel(tier, index, tiers) {
+  if (tier?.maxContext === null) {
+    const prev = index > 0 ? tiers[index - 1]?.maxContext : null
+
+    return prev === null || prev === undefined ? '∞' : `>${compactNumber(prev)}`
+  }
+
+  return `≤${compactNumber(tier.maxContext)}`
+}
+
+/** 纯函数：改某一档的价（不分档时就是改 profile.prices）。 */
+export function setTierPrices(profile, index, prices) {
+  const tiers = tiersOf(profile)
+  const rates = normalizeRates(prices)
+
+  if (!tiers[index]) {
+    return { ...profile, prices: rates }
+  }
+
+  const next = tiers.map((tier, i) => (i === index ? { ...tier, prices: rates } : tier))
+  const clean = normalizeTiers(next)
+
+  return clean ? { ...profile, prices: clean[0].prices, tiers: clean } : { ...profile, prices: next[0].prices, tiers: undefined }
+}
+
+/**
+ * 纯函数：加一档 —— 原最后一档补上阈值，末尾再补一个无上限档（价复制）。
+ * 切点必须**严格大于**已有最后一档的上限，否则两个档会因上限相同被规整成一个
+ * （表现就是「点了加档没反应」）；默认 272K，撞上了就按上一档上限翻倍。
+ * 加完两档价一样，用户再去改其中一档；锁复位成自动。
+ */
+export function addTier(profile, threshold) {
+  const tiers = tiersOf(profile)
+  const last = tiers[tiers.length - 1]
+  const lastFinite = [...tiers].reverse().find(item => item.maxContext !== null)?.maxContext ?? null
+  const wanted = finite(threshold)
+  const asked = wanted !== null && wanted > 0 ? Math.round(wanted) : TIER_THRESHOLD_DEFAULT
+  const bound = lastFinite === null ? asked : Math.max(asked, lastFinite * 2)
+  const head = tiers.slice(0, -1).concat([{ maxContext: bound, prices: { ...last.prices } }])
+  const clean = normalizeTiers(head.concat([{ maxContext: null, prices: { ...last.prices } }]))
+
+  return { ...profile, prices: clean[0].prices, tierLock: -1, tiers: clean }
+}
+
+/** 纯函数：删掉一档；只剩一档就退回不分档（价 = 留下的那档）。 */
+export function removeTier(profile, index) {
+  const tiers = tiersOf(profile)
+
+  if (tiers.length < 2 || !tiers[index]) {
+    return profile
+  }
+
+  const rest = tiers.filter((_, i) => i !== index).map(tier => ({ ...tier, prices: { ...tier.prices } }))
+  const clean = normalizeTiers(rest)
+
+  return clean
+    ? { ...profile, prices: clean[0].prices, tierLock: -1, tiers: clean }
+    : { ...profile, prices: rest[0].prices, tierLock: -1, tiers: undefined }
+}
+
+/** 纯函数：改某一档的输入上限（最后一档是无上限，改不动）；不许越过上一档。 */
+export function setTierThreshold(profile, index, value) {
+  const tiers = tiersOf(profile)
+  const tier = tiers[index]
+
+  if (!tier || tier.maxContext === null) {
+    return profile
+  }
+
+  const wanted = finite(Number(value))
+  const bound = wanted !== null && wanted > 0 ? Math.round(wanted) : tier.maxContext
+  const prev = index > 0 ? tiers[index - 1].maxContext : 0
+
+  if (prev !== null && prev !== undefined && bound <= prev) {
+    return profile
+  }
+
+  const clean = normalizeTiers(tiers.map((item, i) => (i === index ? { ...item, maxContext: bound } : item)))
+
+  return clean ? { ...profile, prices: clean[0].prices, tiers: clean } : profile
+}
+
+/** 纯函数：手动锁定某一档；传 -1（或越界值）就是「自动」复位。 */
+export function setTierLock(profile, index) {
+  const tiers = tiersOf(profile)
+  const value = finite(index)
+
+  return { ...profile, tierLock: value !== null && value >= 0 && value < tiers.length ? Math.floor(value) : -1 }
+}
+
 const $config = atom(parseStoredPrices(null))
 const $draft = atom(null)
 const $cost = atom({ signature: '', status: 'idle' })
-const $pricesOpen = atom(false)
+/** 价格设置区是否摊开（导出给离线测试台：要驱动价格框就得先把它摊开）。 */
+export const $pricesOpen = atom(false)
 /** 配置文件管理区是否展开（默认展开：这是主入口，收起来用户会找不到）。 */
 export const $profilesOpen = atom(true)
+/** 上下文构成（按类拆分）是否展开：默认收起 —— 面板已经够长，进度条先给个大概。 */
+export const $breakdownOpen = atom(false)
 /** 配置文件里正在编辑名字的那个 id（空 = 没有在改名）。 */
 export const $renamingProfile = atom('')
 /** 美元细节（网关原价 + 汇率）默认收起 —— 平时只看人民币。 */
 export const $usdOpen = atom(false)
 const $gateway = atom({ at: 0, error: '', model: '', provider: '', status: 'idle' })
 
-/** 草稿起点 = 这个会话当前真正生效的那套价（配置文件 > 按模型手填）。 */
-function draftFor(config, model, sessionId) {
+/**
+ * 草稿起点 = 这个会话当前真正生效的那套价（配置文件 > 按模型手填）。
+ * 配置带上下文分档时，起点是**当前生效那一档**的价，并把档位下标一起带上 —— 改价时
+ * 才能落回同一档（框里改的 = 正在用的，不变式）。
+ */
+function draftFor(config, model, sessionId, contextUsed) {
   const base = parseStoredPrices(config)
-  const profile = profileForSession(base, sessionId)
-  const values = profile ? profile.prices : base.byModel[model] || {}
+  const resolved = resolvePrices(base, model, sessionId, contextUsed)
+  const values = resolved.profileId ? resolved.prices : base.byModel[model] || {}
 
-  return { currency: base.currency, model, values: { ...values } }
+  return { currency: base.currency, model, tierIndex: resolved.tierIndex ?? 0, values: { ...values } }
 }
 
 // ── 网关价目（model.options RPC）──────────────────────────────────────────
@@ -837,12 +1086,41 @@ function useContextBreakdown(sessionId, open, busy) {
 
 // ── 展示件 ─────────────────────────────────────────────────────────────────
 
-function Row({ hint, label, value }) {
+/**
+ * 统计格：标签在上、数字在下。九个指标排成三列只要三行 —— 换成「一行一指标」
+ * 要九行，面板立刻长到看不完（用户反馈过）。
+ */
+function Stat({ hint, label, value }) {
   return jsxs('div', {
-    className: 'flex items-baseline justify-between gap-3',
+    className: 'flex min-w-0 flex-col gap-0.5',
+    title: hint || undefined,
     children: [
-      jsx('span', { className: 'min-w-0 truncate text-(--ui-text-tertiary)', title: hint || undefined, children: label }),
-      jsx('span', { className: 'shrink-0 tabular-nums text-foreground', children: value })
+      jsx('span', { className: 'truncate text-[0.625rem] text-(--ui-text-quaternary)', children: label }),
+      jsx('span', { className: 'truncate tabular-nums text-[0.8125rem] text-foreground', children: value })
+    ]
+  })
+}
+
+function StatGrid({ items }) {
+  return jsx('div', {
+    className: 'grid grid-cols-3 gap-x-3 gap-y-2',
+    children: items.map(item => jsx(Stat, { hint: item[2], label: item[0], value: item[1] }, item[0]))
+  })
+}
+
+/** 折叠区标题（把自己那块的内容收起/展开，省高度）。 */
+function SectionToggle({ count, onToggle, open, title }) {
+  return jsxs('button', {
+    className: 'flex items-center gap-1 text-[0.6875rem] font-medium text-(--ui-text-tertiary) hover:text-foreground',
+    onClick: () => {
+      haptic('tap')
+      onToggle()
+    },
+    type: 'button',
+    children: [
+      jsx(Codicon, { className: cn('shrink-0 transition-transform', !open && '-rotate-90'), name: 'chevron-down', size: '0.75rem' }),
+      jsx('span', { children: title }),
+      count === null || count === undefined ? null : jsx('span', { className: 'font-normal text-(--ui-text-quaternary)', children: count })
     ]
   })
 }
@@ -945,7 +1223,8 @@ const SOURCE_NOTES = {
  *   • 单选 → 切换为当前配置（全局激活；被会话独立绑定的会话不受影响）
  *   • ✎ 改名（行内输入框，Enter / 失焦提交）
  *   • ✕ 删除（该文件的会话绑定一并清除）
- * 另有「新建」按钮（从当前生效价一键复制一套），以及当前会话的独立绑定：
+ * 另有「新建」按钮（从当前生效价一键复制一套，并立即切到它 —— 让价格框接着改的
+ * 就是新建的这一个），以及当前会话的独立绑定：
  * 「此会话独立用」下拉选中某个文件后，这个会话的费用就固定按它算，不再跟全局切换走。
  */
 function ProfileManager({ seed, sessionId, t }) {
@@ -983,9 +1262,28 @@ function ProfileManager({ seed, sessionId, t }) {
   }
 
   const createFromCurrent = () => {
+    haptic('tap')
+
     // 从「当前会话正在生效的那套价」复制一份当起点；一个价都还没有就从空的开始，
     // 建完直接在下面的价格框里填 —— 不能因为「还没有价」就把按钮锁死。
-    apply(config => addProfile(config, '', activeProfile?.prices ?? seed))
+    //
+    // 新建之后必须让新配置成为「正在生效」的那一个：价格框写的永远是生效配置
+    // （updateDraft 按 effective.profileId 落笔）。否则接着填的数会写回**老配置**，
+    // 而新配置是老配置的副本 —— 界面上看就是「新建一个配置，把已创建的配置改了」。
+    //   · 这个会话跟随全局 → 新配置设为全局激活（价与刚才一模一样，别的会话费用不变）
+    //   · 这个会话独立绑定了某个配置 → 绑定改指新配置（同样是副本，钱不变，只是换了名字）
+    const base = $config.get()
+    const id = newProfileId(base)
+    // 带档位的配置连档位一起复制（否则新建出来的只剩一套价，分档白设）。
+    const added = addProfile(base, '', activeProfile?.prices ?? seed, activeProfile?.tiers)
+    const next = added.profiles[id]
+      ? boundId
+        ? bindSessionProfile(added, sessionId, id)
+        : setActiveProfile(added, id)
+      : added
+
+    $config.set(next)
+    persistConfig(next)
   }
 
   return jsxs('div', {
@@ -1070,6 +1368,13 @@ function ProfileManager({ seed, sessionId, t }) {
                         className: 'shrink-0 tabular-nums text-[0.625rem] text-(--ui-text-quaternary)',
                         children: `${fmtRate(profile.prices.input, config.currency)} / ${fmtRate(profile.prices.output, config.currency)}`
                       }),
+                      tiersOf(profile).length > 1
+                        ? jsx('span', {
+                            className: 'shrink-0 text-[0.625rem] text-(--ui-text-quaternary)',
+                            title: t('tierCountHint'),
+                            children: t('tierCountTag', tiersOf(profile).length)
+                          })
+                        : null,
                       jsx('button', {
                         'aria-label': t('profileDeleteHint'),
                         className: 'shrink-0 text-(--ui-text-quaternary) hover:text-foreground',
@@ -1094,25 +1399,30 @@ function ProfileManager({ seed, sessionId, t }) {
               }),
 
               // 当前会话的独立绑定：默认「跟随全局」，选了某个文件就固定用它。
+              // 用 SDK 的 Select（radix，主题化 + 自动 portal）—— 原生 <select> 在深色
+              // 面板里是白底、展开一片白，用户明确反馈过。
               sessionId
                 ? jsxs('label', {
                     className: 'flex items-center gap-2 pt-1 text-[0.6875rem] text-(--ui-text-tertiary)',
                     children: [
                       jsx('span', { className: 'shrink-0', children: t('sessionBindLabel') }),
-                      jsx(
-                        'select',
-                        {
-                          className: 'min-w-0 flex-1 rounded border border-(--ui-stroke-secondary) bg-transparent px-1 py-0.5 text-[0.6875rem] text-foreground',
-                          onChange: event => apply(config => bindSessionProfile(config, sessionId, event.target.value)),
-                          value: boundId,
-                          children: [
-                            jsx('option', { children: t('sessionBindFollow'), value: '' }, '__follow'),
-                            ...profileIds.map(id =>
-                              jsx('option', { children: config.profiles[id].name, value: id }, id)
-                            )
-                          ]
-                        }
-                      )
+                      jsx(Select, {
+                        onValueChange: value => apply(config => bindSessionProfile(config, sessionId, value)),
+                        value: boundId || BIND_FOLLOW,
+                        children: [
+                          jsx(SelectTrigger, {
+                            className: 'min-w-0 flex-1 text-[0.6875rem]',
+                            size: 'sm',
+                            children: jsx(SelectValue, {})
+                          }),
+                          jsx(SelectContent, {
+                            children: [
+                              jsx(SelectItem, { value: BIND_FOLLOW, children: t('sessionBindFollow') }),
+                              ...profileIds.map(id => jsx(SelectItem, { value: id, children: config.profiles[id].name }, id))
+                            ]
+                          })
+                        ]
+                      })
                     ]
                   })
                 : null
@@ -1123,15 +1433,157 @@ function ProfileManager({ seed, sessionId, t }) {
   })
 }
 
-function PriceEditor({ currency, model, onChange, onCurrency, onReset, open, setOpen, t, values }) {
+/**
+ * 档位条：给「按上下文阈值分档」的价格配置选档。
+ *   自动    —— 按当前上下文占用（≈ 下一次请求的输入大小）切档，价格随阈值变化；
+ *   点某一档 —— 手动锁定为它，不随上下文变化（点回「自动」复位）。
+ * 「加一档 / 删掉这一档」决定**是否**分档：只有一档 = 所有输入一个价。
+ * 分档只挂在价格配置文件上（手填 / 网关价 / 通用默认价都是单档）。
+ */
+function TierBar({ contextUsed, editProfile, effective, profile, t }) {
+  const tiers = tiersOf(profile)
+  const multi = tiers.length >= 2
+  const index = Math.min(Math.max(effective.tierIndex ?? 0, 0), tiers.length - 1)
+  const tier = tiers[index]
+  const prevBound = index > 0 ? tiers[index - 1].maxContext : 0
+  const [draft, setDraft] = useState(null)
+
+  // 换了档就把阈值框的临时输入丢掉，免得上一档的草稿串到这一档。
+  useEffect(() => {
+    setDraft(null)
+  }, [index, effective.profileId])
+
+  const commitThreshold = value => {
+    setDraft(value)
+
+    const wanted = finite(Number(value))
+
+    // 只提交合法值（正的、且大于上一档的上限）—— 打字中间态留在草稿里，不往回弹。
+    if (wanted !== null && wanted > 0 && (prevBound === null || wanted > prevBound)) {
+      editProfile(item => setTierThreshold(item, index, wanted))
+    }
+  }
+
+  return jsxs('div', {
+    className: 'mb-2 flex flex-col gap-1.5 rounded border border-(--ui-stroke-secondary) p-1.5',
+    children: [
+      jsxs('div', {
+        className: 'flex items-center justify-between gap-2',
+        children: [
+          jsxs('span', {
+            className: 'flex min-w-0 items-center gap-1 text-[0.6875rem] text-(--ui-text-secondary)',
+            children: [
+              jsx(Codicon, { className: 'shrink-0', name: 'layers', size: '0.7rem' }),
+              jsx('span', { className: 'shrink-0', children: t('tierSection') }),
+              multi
+                ? jsxs('span', {
+                    className: 'truncate text-(--ui-text-quaternary)',
+                    children: [
+                      t('tierTag', index + 1, tiers.length),
+                      effective.tierLocked ? ` · ${t('tierLocked')}` : ''
+                    ].join('')
+                  })
+                : null
+            ]
+          }),
+          jsxs('span', {
+            className: 'flex shrink-0 items-center gap-1',
+            children: [
+              jsx(Button, {
+                children: t('tierAddBtn'),
+                onClick: () => {
+                  haptic('tap')
+                  // 切点由 addTier 自己定（默认 272K，撞上已有上限就按上一档翻倍）。
+                  editProfile(item => addTier(item))
+                },
+                size: 'micro',
+                title: t('tierAddHint'),
+                variant: 'ghost'
+              }),
+              multi
+                ? jsx(Button, {
+                    children: t('tierRemoveBtn'),
+                    onClick: () => {
+                      haptic('tap')
+                      editProfile(item => removeTier(item, index))
+                    },
+                    size: 'micro',
+                    title: t('tierRemoveHint'),
+                    variant: 'ghost'
+                  })
+                : null
+            ]
+          })
+        ]
+      }),
+
+      multi
+        ? jsx(SegmentedControl, {
+            onChange: id => {
+              haptic('tap')
+              editProfile(item => setTierLock(item, id === 'auto' ? -1 : Number(id)))
+            },
+            options: [
+              { id: 'auto', label: t('tierAuto') },
+              ...tiers.map((item, i) => ({ id: String(i), label: tierLabel(item, i, tiers) }))
+            ],
+            value: effective.tierLocked ? String(index) : 'auto'
+          })
+        : null,
+
+      multi && tier && tier.maxContext !== null
+        ? jsxs('label', {
+            className: 'flex items-center gap-2 text-[0.6875rem] text-(--ui-text-tertiary)',
+            children: [
+              jsx('span', { className: 'shrink-0', title: t('tierLimitHint'), children: t('tierLimitLabel') }),
+              jsx(Input, {
+                inputMode: 'numeric',
+                onChange: event => commitThreshold(event.target.value),
+                onKeyDown: event => {
+                  if (event.key === 'Enter') {
+                    setDraft(null)
+                  }
+                },
+                placeholder: String(TIER_THRESHOLD_DEFAULT),
+                suffix: 'tok',
+                value: draft ?? String(tier.maxContext)
+              })
+            ]
+          })
+        : null,
+
+      jsx('p', {
+        className: 'text-[0.6875rem] text-(--ui-text-quaternary)',
+        children: multi
+          ? effective.tierLocked
+            ? t('tierHintLocked')
+            : finite(contextUsed) === null
+              ? t('tierUnknown')
+              : t('tierHint')
+          : t('tierOffHint')
+      })
+    ]
+  })
+}
+
+function PriceEditor({ contextUsed, currency, model, onChange, onCurrency, onReset, open, setOpen, t, values }) {
   const config = useValue($config)
   const gateway = useValue($gateway)
   const profile = useValue(host.state.focusedSessionProfile)
   const sessionId = useValue(host.state.focusedSessionId)
-  const effective = effectivePrices(config, model, sessionId)
+  const effective = effectivePrices(config, model, sessionId, contextUsed)
   const symbol = currency === 'USD' ? '$' : '¥'
   const usdOpen = useValue($usdOpen)
   const fetching = gateway.status === 'fetching' && gateway.model === model
+  // 分档操作只作用在「正在生效的配置」上（与价格框同一个落笔目标，别造第二个编辑目标）。
+  const tierProfile = effective.profileId ? config.profiles[effective.profileId] : null
+
+  const editProfile = mutator => {
+    const next = mutateProfile($config.get(), effective.profileId, mutator)
+
+    $config.set(next)
+    persistConfig(next)
+  }
 
   // 没手填过也还没有默认价 → 自动去网关要一次价目。换模型的痛点就靠这一句消掉。
   useEffect(() => {
@@ -1163,7 +1615,7 @@ function PriceEditor({ currency, model, onChange, onCurrency, onReset, open, set
     const next = clearManual($config.get(), model)
 
     $config.set(next)
-    $draft.set(draftFor(next, model, sessionId))
+    $draft.set(draftFor(next, model, sessionId, contextUsed))
     persistConfig(next)
   }
 
@@ -1256,6 +1708,15 @@ function PriceEditor({ currency, model, onChange, onCurrency, onReset, open, set
                 className: 'max-w-[10rem] truncate font-medium text-(--ui-text-secondary)',
                 title: effective.profileName,
                 children: `「${effective.profileName}」`
+              })
+            : null,
+          effective.source === 'profile' && effective.tierCount > 1
+            ? jsxs('span', {
+                className: 'shrink-0 tabular-nums',
+                children: [
+                  t('tierTag', effective.tierIndex + 1, effective.tierCount),
+                  effective.tierLocked ? ` · ${t('tierLocked')}` : ''
+                ].join('')
               })
             : null,
           effective.source === 'gateway'
@@ -1365,6 +1826,8 @@ function PriceEditor({ currency, model, onChange, onCurrency, onReset, open, set
                 className: 'mb-2 text-[0.6875rem] text-(--ui-text-tertiary)',
                 children: effective.source === 'gateway' ? t('priceFromGateway') : t('priceHint')
               }),
+              // 分档（只对价格配置文件出现）：选档 / 加档删档 / 改阈值。
+              tierProfile ? jsx(TierBar, { contextUsed, editProfile, effective, profile: tierProfile, t }) : null,
               jsxs('div', {
                 className: 'grid grid-cols-2 gap-2',
                 children: PRICE_FIELDS.map(([key, labelKey, hintKey, isMillion]) =>
@@ -1402,12 +1865,19 @@ function PriceEditor({ currency, model, onChange, onCurrency, onReset, open, set
 }
 
 /** 复制按钮用的纯文本快照。 */
-function buildReport(t, usage, breakdown, cost) {
+function buildReport(t, usage, breakdown, cost, effective) {
   const max = finite(usage?.context_max)
 
   const lines = [
     t('title'),
     usage?.model ? `${t('rowModel')}: ${usage.model}` : null,
+    effective?.source === 'profile' && effective.profileName
+      ? `${t('priceSource')}: ${t('srcProfile')}「${effective.profileName}」${
+          effective.tierCount > 1
+            ? ` · ${t('tierTag', effective.tierIndex + 1, effective.tierCount)}${effective.tierLocked ? ` · ${t('tierLocked')}` : ''}`
+            : ''
+        }`
+      : null,
     `${t('sectionContext')}: ${fmtCount(usage?.context_used)} / ${max === null ? DASH : compactNumber(max)} (${fmtPercent(usage?.context_percent)})`,
     `${t('rowInput')}: ${fmtCount(usage?.input)}`,
     `${t('rowOutput')}: ${fmtCount(usage?.output)}`,
@@ -1469,6 +1939,7 @@ function TokenPanel({
 }) {
   const t = usePluginI18n(ID)
 
+  const breakdownOpen = useValue($breakdownOpen)
   const contextMax = finite(usage?.context_max)
   const contextUsed = finite(usage?.context_used)
   const percent = finite(usage?.context_percent)
@@ -1480,19 +1951,17 @@ function TokenPanel({
   const sourceName = breakdown?.context_source || usage?.context_source || t('sourceUnknown')
   const sourceLine = usage ? `${t('source')}：${sourceName} · ${estimated ? t('estimated') : t('measured')}` : null
 
-  const counters = [
+  // 九个指标挤成一个 3×3 网格（原来一行一个要九行；面板高度是用户反馈过的痛点）。
+  const stats = [
     [t('rowInput'), fmtCount(usage?.input), t('rowInputHint')],
     [t('rowOutput'), fmtCount(usage?.output), t('rowOutputHint')],
     [t('rowReasoning'), fmtCount(usage?.reasoning), t('rowReasoningHint')],
+    [t('rowCacheHit'), fmtPercent(usage?.cache_hit_pct), t('rowCacheHitHint')],
+    [t('rowTps'), fmtTps(usage?.avg_tps), t('rowTpsHint')],
+    [t('rowLatency'), fmtSeconds(usage?.avg_latency_s), t('rowLatencyHint')],
     [t('rowTotal'), fmtCount(usage?.total), null],
     [t('rowCalls'), fmtCount(usage?.calls), t('rowCallsHint')],
     [t('rowCompressions'), fmtCount(usage?.compressions), t('rowCompressionsHint')]
-  ]
-
-  const perf = [
-    [t('rowCacheHit'), fmtPercent(usage?.cache_hit_pct), t('rowCacheHitHint')],
-    [t('rowTps'), fmtTps(usage?.avg_tps), t('rowTpsHint')],
-    [t('rowLatency'), fmtSeconds(usage?.avg_latency_s), t('rowLatencyHint')]
   ]
 
   // 面板也要自己判「当前用哪套价」（它只拿到 usage，拿不到 chip 的 model 局部量）。
@@ -1503,12 +1972,13 @@ function TokenPanel({
   const priced = cost?.status === 'ready'
   // 四层来源挑一个（配置文件 > 手填 > 网关价目 > 通用默认价）：有没有价可算，看它。
   // 传 sessionId：会话独立绑定了配置文件时，面板显示的就是绑定那套。
-  const effective = effectivePrices(config, model, sessionId)
+  // 传 contextUsed：配置带上下文分档时，显示/计费的是「当前上下文落在的那一档」。
+  const effective = effectivePrices(config, model, sessionId, contextUsed)
   const hasPrices = effective.source !== 'none'
 
   return jsx('div', {
     'data-slot': 'session-token-detail',
-    className: 'max-h-[68vh] w-[21rem] overflow-y-auto p-3 text-[0.8125rem]',
+    className: 'max-h-[78vh] w-[23rem] overflow-y-auto p-3 text-[0.8125rem]',
     children: jsxs('div', {
       className: 'flex flex-col gap-3',
       children: [
@@ -1531,7 +2001,7 @@ function TokenPanel({
                 jsx(CopyButton, {
                   appearance: 'icon',
                   buttonSize: 'icon-xs',
-                  text: () => buildReport(t, usage, breakdown, cost),
+                  text: () => buildReport(t, usage, breakdown, cost, effective),
                   title: t('copyTip')
                 }),
                 jsx(Button, {
@@ -1629,40 +2099,47 @@ function TokenPanel({
 
         usage
           ? jsx(Stack, {
-              title: t('sectionCounters'),
-              children: counters.map(row => jsx(Row, { hint: row[2], label: row[0], value: row[1] }, row[0]))
+              title: t('sectionStats'),
+              children: [jsx(StatGrid, { items: stats })]
             })
           : null,
 
-        usage
-          ? jsx(Stack, {
-              title: t('sectionPerf'),
-              children: perf.map(row => jsx(Row, { hint: row[2], label: row[0], value: row[1] }, row[0]))
-            })
-          : null,
-
+        // 上下文构成默认收起：分段进度条已经给了大概，要看每类数字再点开。
         usage && categories.length
-          ? jsx(Stack, {
-              title: t('sectionBreakdown'),
-              children: categories.map(category =>
-                jsxs(
-                  'div',
-                  {
-                    className: 'flex items-center justify-between gap-2',
-                    children: [
-                      jsxs('span', {
-                        className: 'flex min-w-0 items-center gap-2',
-                        children: [
-                          jsx('span', { className: 'size-2 shrink-0 rounded-[2px]', style: { background: category.color } }),
-                          jsx('span', { className: 'truncate text-(--ui-text-tertiary)', children: category.label })
-                        ]
-                      }),
-                      jsx('span', { className: 'shrink-0 tabular-nums text-foreground', children: `~${compactNumber(category.tokens)}` })
-                    ]
-                  },
-                  category.id
-                )
-              )
+          ? jsxs('div', {
+              className: 'flex flex-col gap-1.5',
+              children: [
+                jsx(SectionToggle, {
+                  count: `· ${t('breakdownCount', categories.length)}`,
+                  onToggle: () => $breakdownOpen.set(!$breakdownOpen.get()),
+                  open: breakdownOpen,
+                  title: t('sectionBreakdown')
+                }),
+                breakdownOpen
+                  ? jsx('div', {
+                      className: 'flex flex-col gap-1',
+                      children: categories.map(category =>
+                        jsxs(
+                          'div',
+                          {
+                            className: 'flex items-center justify-between gap-2',
+                            children: [
+                              jsxs('span', {
+                                className: 'flex min-w-0 items-center gap-2',
+                                children: [
+                                  jsx('span', { className: 'size-2 shrink-0 rounded-[2px]', style: { background: category.color } }),
+                                  jsx('span', { className: 'truncate text-(--ui-text-tertiary)', children: category.label })
+                                ]
+                              }),
+                              jsx('span', { className: 'shrink-0 tabular-nums text-foreground', children: `~${compactNumber(category.tokens)}` })
+                            ]
+                          },
+                          category.id
+                        )
+                      )
+                    })
+                  : null
+              ]
             })
           : null,
 
@@ -1679,6 +2156,7 @@ function TokenPanel({
 
         usage
           ? jsx(PriceEditor, {
+              contextUsed,
               currency,
               model,
               onChange: onPrice,
@@ -1713,9 +2191,12 @@ function TokenChip({ storage }) {
 
   const model = usage?.model || gatewayModel || ''
   const currency = draft?.currency || config.currency
-  // 真正参与计费的是「四层来源挑一个 + 折算过的价」，手填那一层仍由草稿即时驱动。
+  // 当前上下文占用（≈ 下一次请求的输入大小）—— 分档价按它选档，所以要在取价之前算出来。
+  const contextUsed = finite(usage?.context_used)
+  // 真正参与计费的是「四层来源挑一个 + 选档 + 折算过的价」，手填那一层仍由草稿即时驱动。
   // 传 sessionId：这个会话独立绑定了配置文件时，费用按绑定那套算。
-  const effective = effectivePrices(config, model, sessionId)
+  // 传 contextUsed：配置带上下文分档时，价格随阈值自动切档。
+  const effective = effectivePrices(config, model, sessionId, contextUsed)
   // 输入框显示「当前真正在用的价」：手填的、网关取回的、还是默认价 —— 框里的数
   // 永远和上面那行「价格来源」对得上（以前只显示手填，于是出现「来源=网关 + 空框」）。
   //
@@ -1723,7 +2204,11 @@ function TokenChip({ storage }) {
   // 回填输入框会把「1.」「0.50」这类输入中间态当场抹掉 —— 表现就是小数点打不进去、
   // 只能输整数。只有草稿里没有的字段（从没手填过）才用当前生效价兜底。
   // 0 显示成空框，因为 hint 说的是「留空即 0」。
-  const manualValues = draft?.model === model ? draft.values : {}
+  // 档位与配置都要对上：草稿停在别的配置（刚切配置）或别的档（上下文刚越过阈值）上时，
+  // 不能拿它的数当这一档的起点 —— 那会让「框里的数」和「价格来源」对不上。
+  const sameTier =
+    (draft?.tierIndex ?? 0) === (effective.tierIndex ?? 0) && (draft?.profileId ?? '') === (effective.profileId ?? '')
+  const manualValues = draft?.model === model && sameTier ? draft.values : {}
   const priceValues = Object.fromEntries(
     PRICE_KEYS.map(key => [
       key,
@@ -1738,14 +2223,19 @@ function TokenChip({ storage }) {
   // 生效的配置文件（会话绑定 > 全局激活）；切它要重置草稿，否则框里留着上一套的数。
   const activeProfileId = effective.profileId
 
-  // 首次挂载 / 切模型 / 切配置文件：把该生效价读进草稿（有没有价、用哪一套由面板自己判断）。
+  // 首次挂载 / 切模型 / 切配置文件 / 切档：把该生效价读进草稿（有没有价、用哪一套由面板自己判断）。
   useEffect(() => {
     const current = $draft.get()
 
-    if (!current || current.model !== model || current.profileId !== activeProfileId) {
-      $draft.set({ ...draftFor($config.get(), model, sessionId), profileId: activeProfileId })
+    if (
+      !current ||
+      current.model !== model ||
+      current.profileId !== activeProfileId ||
+      (current.tierIndex ?? 0) !== (effective.tierIndex ?? 0)
+    ) {
+      $draft.set({ ...draftFor($config.get(), model, sessionId, contextUsed), profileId: activeProfileId })
     }
-  }, [config, model, activeProfileId])
+  }, [config, model, activeProfileId, effective.tierIndex])
 
   // 用量或价格一变就发一个异步费用任务（去抖 + 过期丢弃），渲染只读结果。
   // 依赖用签名而不是价格对象：价格对象每帧都新建，按对象比较会每帧重发一个任务。
@@ -1762,7 +2252,6 @@ function TokenChip({ storage }) {
   const money = costView?.status === 'ready' ? formatMoney(costView.total, currency) : null
 
   const contextMax = finite(usage?.context_max)
-  const contextUsed = finite(usage?.context_used)
   const percent = finite(usage?.context_percent)
   const total = finite(usage?.total)
   const estimated = Boolean(usage?.context_estimated)
@@ -1780,19 +2269,23 @@ function TokenChip({ storage }) {
 
   const updateDraft = mutate => {
     const stored = $draft.get()
-    // 草稿可能还停在别的模型上（刚换模型、或静态渲染里 effect 没跑）——先换回来，
-    // 否则会把上个模型的数当成这个模型的编辑起点。
-    const current = stored && stored.model === model && stored.profileId === effective.profileId
-      ? stored
-      : { ...draftFor($config.get(), model, sessionId), profileId: effective.profileId }
-    const next = { ...mutate(current), model, profileId: effective.profileId }
+    // 草稿可能还停在别的模型 / 别的档上（刚换模型，或上下文越过阈值换了档）——先换回来，
+    // 否则会把上一处编辑的数当成这一处的起点。
+    const current =
+      stored &&
+      stored.model === model &&
+      stored.profileId === effective.profileId &&
+      (stored.tierIndex ?? 0) === (effective.tierIndex ?? 0)
+        ? stored
+        : { ...draftFor($config.get(), model, sessionId, contextUsed), profileId: effective.profileId }
+    const next = { ...mutate(current), model, profileId: effective.profileId, tierIndex: effective.tierIndex ?? 0 }
     const base = parseStoredPrices($config.get())
     const currency = next.currency === 'USD' ? 'USD' : 'CNY'
     const rates = normalizeRates(next.values)
-    // 有配置文件生效时，这五个框改的是**那个配置文件的价格**（用户改的就是它）；
+    // 有配置文件生效时，这五个框改的是**那个配置文件里正在生效的那一档**（用户改的就是它）；
     // 没有配置文件才落回老路径（按模型的手填层），行为与以前一致。
     const nextConfig = effective.profileId
-      ? updateProfile({ ...base, currency }, effective.profileId, { prices: rates })
+      ? updateProfile({ ...base, currency }, effective.profileId, { prices: rates, tierIndex: effective.tierIndex })
       : mergePrices(base, model, { ...rates, currency })
 
     $draft.set(next)
@@ -1830,7 +2323,7 @@ function TokenChip({ storage }) {
       }),
       jsx(PopoverContent, {
         align: 'end',
-        className: 'w-[21rem] p-0',
+        className: 'w-[23rem] p-0',
         side: 'top',
         sideOffset: 6,
         children: jsx(TokenPanel, {
@@ -1898,7 +2391,7 @@ export default {
         priceSourceAt: '更新于',
         profileActivateHint: '切换为当前配置（全局生效；被会话独立绑定的会话不受影响）',
         profileAddBtn: '新建配置（复制当前价）',
-        profileAddHint: '把当前正在生效的那套价复制成一个新配置文件，改名改价即可',
+        profileAddHint: '把当前正在生效的那套价复制成一个新配置文件，并立即切到它（下面那几个框接着改的就是它；本会话若独立绑定了配置，也会跟着切过去）',
         profileBoundTag: '本会话',
         profileDeleteHint: '删除这个配置文件（绑定了它的会话会退回跟随全局）',
         profileFull: '已满 20 个',
@@ -1916,6 +2409,22 @@ export default {
         srcNoteNone: '还没有价格：手填，或点「取网关价目」自动取，费用立刻出来',
         srcNoteProfile: '这套价来自价格配置文件（会话绑定 > 全局激活），压过手填与网关价',
         srcProfile: '配置文件',
+        tierAddBtn: '加一档',
+        tierAddHint: '在末尾补一个「无上限」档（价复制最后一档）；原来那档的上限默认切在 272K，撞上已有上限就按上一档翻倍',
+        tierAuto: '自动',
+        tierCountHint: '这个配置按输入大小分档计价',
+        tierCountTag: n => `${n} 档`,
+        tierHint: '自动 = 按当前上下文占用（≈ 下一次请求的输入大小）切档，价格随阈值变化；点某一档 = 固定用它，不随上下文变',
+        tierHintLocked: '已锁定这一档：费用固定按它算，不随上下文变化；点「自动」恢复随阈值变价',
+        tierLimitHint: '这一档覆盖「输入小于该值」；最后一档是无上限',
+        tierLimitLabel: '输入上限',
+        tierLocked: '已锁定',
+        tierOffHint: '当前不分档：所有输入一个价。点「加一档」就能按输入大小分价',
+        tierRemoveBtn: '删掉这一档',
+        tierRemoveHint: '删掉正在编辑的这一档；只剩一档就退回不分档',
+        tierSection: '按上下文分档',
+        tierTag: (i, n) => `档 ${i}/${n}`,
+        tierUnknown: '这个会话还没报上下文大小，暂时按第一档算',
         sectionProfiles: '价格配置',
         usdRawLabel: '网关原价',
         usdToggle: '美元',
@@ -1967,8 +2476,8 @@ export default {
         sectionBreakdown: '上下文构成',
         sectionContext: '上下文窗口',
         sectionCost: '会话费用',
-        sectionCounters: 'Token 计数',
-        sectionPerf: '性能与缓存',
+        sectionStats: '用量与性能',
+        breakdownCount: n => `${n} 类`,
         sectionPrices: '价格设置',
         sessionBindFollow: '跟随全局',
         sessionBindLabel: '此会话独立用',
@@ -2004,7 +2513,7 @@ export default {
         priceSourceAt: 'updated',
         profileActivateHint: 'Set as the active profile (global; sessions bound to their own profile are unaffected)',
         profileAddBtn: 'New profile (copy current)',
-        profileAddHint: 'Copy the price set currently in effect into a new profile, then rename and edit it',
+        profileAddHint: 'Copy the price set currently in effect into a new profile and switch to it — the fields below then edit the new one (a session-bound session follows it too)',
         profileBoundTag: 'this session',
         profileDeleteHint: 'Delete this profile (bound sessions fall back to following the global one)',
         profileFull: 'Limit of 20 reached',
@@ -2022,6 +2531,22 @@ export default {
         srcNoteNone: 'No prices yet: type them in, or hit Fetch gateway prices — the cost appears right away',
         srcNoteProfile: 'These prices come from a price profile (session binding > global active), overriding manual and gateway prices',
         srcProfile: 'Profile',
+        tierAddBtn: 'Add tier',
+        tierAddHint: 'Append an unlimited tier (prices copied from the last one); the old last tier gets a cut-off of 272K, doubled past any limit already in use',
+        tierAuto: 'Auto',
+        tierCountHint: 'This profile is priced by input size',
+        tierCountTag: n => `${n} tiers`,
+        tierHint: 'Auto = pick the tier by current context usage (≈ the next request’s input size), so the price follows the threshold; click a tier to pin it',
+        tierHintLocked: 'Pinned to this tier: the cost stays on it whatever the context does; click Auto to follow the threshold again',
+        tierLimitHint: 'This tier covers inputs below that value; the last tier is unlimited',
+        tierLimitLabel: 'Input under',
+        tierLocked: 'pinned',
+        tierOffHint: 'Not tiered: one price for every input size. Hit “Add tier” to price by input size',
+        tierRemoveBtn: 'Remove tier',
+        tierRemoveHint: 'Remove the tier being edited; with a single tier left it goes back to untiered',
+        tierSection: 'Context tiers',
+        tierTag: (i, n) => `tier ${i}/${n}`,
+        tierUnknown: 'This session has not reported a context size yet — tier 1 for now',
         sectionProfiles: 'Price profiles',
         usdRawLabel: 'Gateway raw',
         usdToggle: 'USD',
@@ -2073,8 +2598,8 @@ export default {
         sectionBreakdown: 'Context composition',
         sectionContext: 'Context window',
         sectionCost: 'Session cost',
-        sectionCounters: 'Token counters',
-        sectionPerf: 'Performance & cache',
+        sectionStats: 'Usage & performance',
+        breakdownCount: n => `${n} items`,
         sectionPrices: 'Price settings',
         sessionBindFollow: 'Follow global',
         sessionBindLabel: 'This session uses',

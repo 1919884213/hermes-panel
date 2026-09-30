@@ -98,7 +98,7 @@ npm run package      # 生成 .vsix
 同一仓库里还放了几个 Hermes **桌面端**（Electron）UI 插件，与上面的 VS Code 扩展互不相干：
 
 - **session-token-detail** — 会话 Token 详情 · 费用估算（上下文占用、分项花费、
-  可切换的价格配置文件、会话独立绑定）
+  可切换的价格配置文件、会话独立绑定、按输入大小分档并按上下文自动切档）
 - **session-bulk-archive** — 会话批量归档（多选一次归档 / 恢复）
 
 安装：把插件目录复制到 `<HERMES_HOME>/desktop-plugins/`，再 `Ctrl/⌘K` → Reload desktop plugins。

@@ -20,17 +20,25 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import * as sdk from '@hermes/plugin-sdk'
 
 import plugin, {
+  $breakdownOpen,
   $usdOpen,
+  $pricesOpen,
+  addTier,
   clearManual,
   convertPrices,
   effectivePrices,
   ensureGatewayPrices,
   gatewayPricesFor,
+  mutateProfile,
+  normalizeTiers,
   parseGatewayPrice,
   putGatewayPrices,
+  removeTier,
   resolvePrices,
   setDefaults,
   setStorageDoor,
+  setTierLock,
+  setTierThreshold,
   mergePrices,
   normalizeRates,
   parseStoredPrices,
@@ -39,7 +47,10 @@ import plugin, {
   costSignature,
   formatMoney,
   primeCost,
-  schedulePersist
+  schedulePersist,
+  tierLabel,
+  tierLockIndex,
+  tiersOf
 } from '../plugin.js'
 
 const ID = 'session-token-detail'
@@ -261,13 +272,24 @@ check('缓存命中读/写用的是价格字段名', htmlPriced.includes('缓存
 check('已填价格时价格输入框按用户折叠状态隐藏（这里默认折叠）', !htmlPriced.includes('priceHint 留空') && !htmlPriced.includes('data-adornment'))
 check('没有把 i18n key 或 undefined 渲染出来', !/section[A-Z]|row[A-Z]|cost[A-Z]|price[A-Z]|undefined/.test(htmlPriced))
 
-// 按类拆分
+// 按类拆分：默认收起（面板高度是用户反馈过的痛点），点开才渲染每一类。
 sdk.__setQueryData([ID, 'breakdown', 'rt-1'], BREAKDOWN)
+
+const htmlCollapsed = renderChip()
+
+check(
+  '上下文构成默认收起：只留折叠头（每类的标签不渲染，进度条仍在）',
+  htmlCollapsed.includes('上下文构成') && htmlCollapsed.includes('2 类') && !htmlCollapsed.includes('System prompt'),
+  htmlCollapsed.match(/上下文构成[^<]*/)?.[0]
+)
+
+$breakdownOpen.set(true)
 
 const htmlBreakdown = renderChip()
 
 check('拆分项渲染标签与后端颜色', htmlBreakdown.includes('System prompt') && htmlBreakdown.includes('background:#ff8800'))
 check('breakdown 查询只在面板打开时 enabled', sdk.record.queries.filter(q => q.key.includes('breakdown')).every(q => q.enabled === false))
+$breakdownOpen.set(false)
 
 // ── D. 渲染：没填价格（新模型）→ 输入框自动摊开 ────────────────────────────
 sdk.host.state.focusedUsage.set(USAGE_PLAIN)
@@ -700,6 +722,400 @@ check(
 )
 check('新来源文案在两套 i18n 里都有（没漏 key）', htmlProfiles.includes('配置文件') && !htmlProfiles.includes('srcProfile'))
 $profilesOpen.set(false)
+
+// ── G. 新建配置文件之后，价格框改的必须是新建的那个（回归）────────────────────
+// 老 bug：已有一个激活配置 → 点「新建配置（复制当前价）」→ 接着在价格框里填数。
+// 新配置当时不会被激活，而价格框写的永远是「当前生效的配置」（updateDraft 按
+// effective.profileId 落笔）—— 于是数写回了**老配置**；新配置又是老配置的副本，
+// 界面上看就是「新建一个配置文件，已创建的那个被改了」。
+// 契约：新建 = 从当前生效价复制一套 + 立即切到它（跟随全局的会话 → 设为全局激活；
+// 独立绑定的会话 → 绑定改指新配置），价格框与「价格来源」行始终指向同一个配置。
+const profileWrites = []
+let profileStore = {
+  activeProfile: 'p1',
+  currency: 'CNY',
+  profiles: { p1: { id: 'p1', name: '贵价', prices: P_A } },
+  rate: 7.2,
+  sessions: {}
+}
+const profileStorage = {
+  get: (key, fallback) => (key === 'prices' ? structuredClone(profileStore) : fallback),
+  remove: () => {},
+  set: (key, value) => {
+    profileWrites.push(structuredClone(value))
+    profileStore = structuredClone(value)
+  }
+}
+
+/** 用给定的存储重新注册一次（等价于重启后从盘里读配置）。 */
+const bootWithStorage = storage => {
+  const captured = []
+
+  plugin.register({
+    i18n: { register: bundles => Object.assign(sdk.__i18n.bundles, bundles) },
+    onEvent: () => () => {},
+    os: {},
+    register: contribution => {
+      captured.push(contribution)
+
+      return () => {}
+    },
+    registerMany: list => list.forEach(contribution => captured.push(contribution)),
+    rest: async () => ({}),
+    socket: () => () => {},
+    storage
+  })
+
+  return captured.filter(contribution => contribution.area === 'statusBar.right').at(-1)
+}
+
+/** 渲染一次，只返回这次新产生的按钮 / 输入框 / 分段控件（record 是跨渲染累加的）。 */
+const renderFreshChip = chip => {
+  const before = {
+    buttons: sdk.record.buttons.length,
+    inputs: sdk.record.inputs.length,
+    segments: sdk.record.segments.length,
+    selects: sdk.record.selects.length
+  }
+  const html = renderToStaticMarkup(chip.render())
+
+  return {
+    buttons: sdk.record.buttons.slice(before.buttons),
+    html,
+    inputs: sdk.record.inputs.slice(before.inputs),
+    segments: sdk.record.segments.slice(before.segments),
+    selects: sdk.record.selects.slice(before.selects)
+  }
+}
+
+/** 价格框 = 末尾 5 个不带汇率后缀的输入框（顺序：输入/输出/缓存读/缓存写/每次调用）。 */
+const priceFieldsOf = inputs => inputs.filter(field => field.suffix !== '¥').slice(-5)
+
+sdk.host.state.focusedSessionId.set('rt-profiles')
+sdk.host.state.focusedUsage.set(USAGE)
+sdk.host.state.model.set(SEED_MODEL)
+// 价格区默认折叠（已填过价时），等同用户点一下标题把它摊开。
+$pricesOpen.set(true)
+// 上一节把配置管理区收起来了 —— 新建按钮在它里面，先摊开。
+$profilesOpen.set(true)
+
+let freshChip = bootWithStorage(profileStorage)
+let freshView = renderFreshChip(freshChip)
+let addButton = freshView.buttons.find(button => button.label.includes('新建配置'))
+
+check('价格配置区有「新建配置」按钮', Boolean(addButton), addButton?.label)
+addButton.onClick()
+await sleep(900)
+
+check(
+  '新建后新配置立刻成为当前生效的（否则价格框会写回老配置）',
+  profileStore.activeProfile === 'p2' && Object.keys(profileStore.profiles).length === 2,
+  `active=${profileStore.activeProfile} profiles=${Object.keys(profileStore.profiles)}`
+)
+check(
+  '新配置是当前生效那套价的副本（复制语义不变）',
+  near(profileStore.profiles.p2?.prices.input, 2) && near(profileStore.profiles.p2?.prices.output, 3),
+  JSON.stringify(profileStore.profiles.p2?.prices)
+)
+
+freshView = renderFreshChip(freshChip)
+priceFieldsOf(freshView.inputs)[0].onChange({ target: { value: '5' } })
+await sleep(900)
+
+check(
+  '新建后填价格落进新配置，老配置一动不动（原 bug 的回归）',
+  near(profileStore.profiles.p2.prices.input, 5) && near(profileStore.profiles.p1.prices.input, 2),
+  JSON.stringify({ p1: profileStore.profiles.p1.prices.input, p2: profileStore.profiles.p2.prices.input })
+)
+
+// 会话独立绑定了某个配置时：新建也要切到新配置，否则价格框还写那个绑定配置。
+profileStore = { ...profileStore, sessions: { 'rt-profiles': 'p1' } }
+profileWrites.length = 0
+freshChip = bootWithStorage(profileStorage)
+freshView = renderFreshChip(freshChip)
+addButton = freshView.buttons.find(button => button.label.includes('新建配置'))
+addButton.onClick()
+await sleep(900)
+
+const newestId = Object.keys(profileStore.profiles).find(id => id !== 'p1' && id !== 'p2')
+
+check(
+  '会话独立绑定时新建：绑定改指新配置（价一样，钱不变）',
+  profileStore.sessions['rt-profiles'] === newestId,
+  `${profileStore.sessions['rt-profiles']} / ${newestId}`
+)
+
+freshView = renderFreshChip(freshChip)
+priceFieldsOf(freshView.inputs)[1].onChange({ target: { value: '9' } })
+await sleep(900)
+
+check(
+  '绑定会话里改价也只动新配置，老的 p1/p2 不被碰',
+  near(profileStore.profiles[newestId].prices.output, 9) &&
+    near(profileStore.profiles.p1.prices.output, 3) &&
+    near(profileStore.profiles.p2.prices.output, 3),
+  JSON.stringify(profileStore.profiles)
+)
+
+$pricesOpen.set(false)
+sdk.host.state.focusedSessionId.set('rt-1')
+
+// ── H. 上下文分档（v3）──────────────────────────────────────────────────────
+// 价目表按「输入大小」分价时（输入 [0,272K) / [272K,+∞)）用档位表达：自动按当前上下文
+// 占用选档，也可以手动锁定某一档。契约三连：解析（prices 镜像第一档）/ 选档（左闭右开、
+// 未知走第一档、锁定优先）/ 写入（改的永远是正在生效那一档，且只动它）。
+const TIER_SMALL = { cacheRead: 0.008, cacheWrite: 0.1, input: 0.08, output: 0.4, request: 0 }
+const TIER_BIG = { cacheRead: 0.016, cacheWrite: 0.2, input: 0.16, output: 0.6, request: 0 }
+const TIER_CUT = 272000
+
+const tiered = parseStoredPrices({
+  activeProfile: 'p9',
+  currency: 'CNY',
+  profiles: {
+    p9: {
+      id: 'p9',
+      name: '默认',
+      prices: TIER_SMALL,
+      tiers: [
+        { maxContext: TIER_CUT, prices: TIER_SMALL },
+        { maxContext: null, prices: TIER_BIG }
+      ]
+    }
+  },
+  rate: 7.2,
+  sessions: {}
+})
+
+check(
+  '分档：两档读得回来，prices 镜像第一档',
+  tiersOf(tiered.profiles.p9).length === 2 && near(tiered.profiles.p9.prices.input, 0.08),
+  JSON.stringify(tiersOf(tiered.profiles.p9).map(tier => tier.maxContext))
+)
+check('分档：不足 2 档不算分档', normalizeTiers([{ maxContext: null, prices: TIER_SMALL }]) === null)
+check(
+  '分档：最后一档强制无上限',
+  tiersOf({ prices: TIER_SMALL, tiers: [{ maxContext: 1000, prices: TIER_SMALL }, { maxContext: 2000, prices: TIER_BIG }] })[1]
+    ?.maxContext === null
+)
+
+const atContext = used => resolvePrices(tiered, SEED_MODEL, 'sess-tier', used)
+
+check('选档：271999 → 第一档', atContext(271999).tierIndex === 0 && near(atContext(271999).prices.input, 0.08))
+check('选档：到 272000（左闭右开）→ 第二档', atContext(TIER_CUT).tierIndex === 1 && near(atContext(TIER_CUT).prices.input, 0.16))
+check('选档：远超阈值 → 第二档（无上限）', atContext(9_000_000).tierIndex === 1)
+check('选档：上下文未知 → 第一档（不臆造高价档）', atContext(undefined).tierIndex === 0 && atContext(null).tierIndex === 0)
+check('选档：不分档的配置永远 1 档', resolvePrices(reparsed, SEED_MODEL, 'sess-9', 9_000_000).tierIndex === 0)
+
+const lockedTier = mutateProfile(tiered, 'p9', item => setTierLock(item, 1))
+
+check(
+  '锁定：锁第二档后上下文很小也按第二档算',
+  resolvePrices(lockedTier, SEED_MODEL, 'sess-tier', 100).tierIndex === 1 &&
+    resolvePrices(lockedTier, SEED_MODEL, 'sess-tier', 100).tierLocked === true
+)
+check(
+  '锁定：点「自动」复位后就随上下文走',
+  resolvePrices(mutateProfile(lockedTier, 'p9', item => setTierLock(item, -1)), SEED_MODEL, 'sess-tier', 100).tierIndex === 0
+)
+
+const editedTier = updateProfile(tiered, 'p9', { prices: { ...TIER_BIG, input: 0.2 }, tierIndex: 1 })
+
+check(
+  '改价：tierIndex=1 时只动第二档',
+  near(tiersOf(editedTier.profiles.p9)[1].prices.input, 0.2) && near(tiersOf(editedTier.profiles.p9)[0].prices.input, 0.08),
+  JSON.stringify(tiersOf(editedTier.profiles.p9).map(tier => tier.prices.input))
+)
+check('改价：prices 镜像仍是第一档（不被第二档污染）', near(editedTier.profiles.p9.prices.input, 0.08))
+check('改价：不给 tierIndex 也绝不动档位结构', tiersOf(updateProfile(tiered, 'p9', { prices: { input: 1 } }).profiles.p9).length === 2)
+
+const grown = mutateProfile(tiered, 'p9', item => addTier(item))
+
+check(
+  '加一档：变 3 档，新档无上限、原上限翻倍当新切点',
+  tiersOf(grown.profiles.p9).length === 3 &&
+    tiersOf(grown.profiles.p9)[2].maxContext === null &&
+    tiersOf(grown.profiles.p9)[1].maxContext === TIER_CUT * 2,
+  JSON.stringify(tiersOf(grown.profiles.p9).map(tier => tier.maxContext))
+)
+
+const shrunk = mutateProfile(tiered, 'p9', item => removeTier(item, 1))
+
+check(
+  '删档：只剩一档就退回不分档（价 = 留下的那档）',
+  tiersOf(shrunk.profiles.p9).length === 1 &&
+    shrunk.profiles.p9.tiers === undefined &&
+    near(shrunk.profiles.p9.prices.input, 0.08),
+  JSON.stringify(shrunk.profiles.p9.prices)
+)
+
+const threeTiers = {
+  prices: TIER_SMALL,
+  tiers: [
+    { maxContext: 1000, prices: TIER_SMALL },
+    { maxContext: 2000, prices: TIER_BIG },
+    { maxContext: null, prices: TIER_BIG }
+  ]
+}
+
+check('阈值：第一档改成 200000 生效', tiersOf(mutateProfile(tiered, 'p9', item => setTierThreshold(item, 0, 200000)).profiles.p9)[0].maxContext === 200000)
+check('阈值：非法值（负）不动', tiersOf(mutateProfile(tiered, 'p9', item => setTierThreshold(item, 0, -5)).profiles.p9)[0].maxContext === TIER_CUT)
+check('阈值：最后一档（无上限）改不动', tiersOf(setTierThreshold(threeTiers, 2, 100))[2].maxContext === null)
+check('阈值：不许改到小于等于上一档（500 ≤ 1000 → 不动）', tiersOf(setTierThreshold(threeTiers, 1, 500))[1].maxContext === 2000)
+check('阈值：改大到 3000 生效', tiersOf(setTierThreshold(threeTiers, 1, 3000))[1].maxContext === 3000)
+
+const tieredRound = parseStoredPrices(
+  JSON.parse(JSON.stringify({ ...tiered, profiles: { ...tiered.profiles, p9: { ...tiered.profiles.p9, tierLock: 1 } } }))
+)
+
+check(
+  '往返：tiers 与 tierLock 落盘读回原样',
+  tiersOf(tieredRound.profiles.p9).length === 2 &&
+    tierLockIndex(tieredRound.profiles.p9) === 1 &&
+    near(tiersOf(tieredRound.profiles.p9)[1].prices.input, 0.16),
+  JSON.stringify(tieredRound.profiles.p9)
+)
+check('往返：老 v2 配置（无 tiers）读回来仍是单档、锁为自动', tiersOf(reparsed.profiles.p1).length === 1 && tierLockIndex(reparsed.profiles.p1) === -1)
+
+// 钱按档算：USAGE 手算（100k 未命中 + 300k 命中 + 100k 写入 + 10k 输出）
+check('费用：第一档 0.008+0.004+0.0024+0.01 = 0.0244', near(computeCost(USAGE, atContext(1000).prices).total, 0.0244))
+check('费用：第二档 0.016+0.006+0.0048+0.02 = 0.0468', near(computeCost(USAGE, atContext(TIER_CUT).prices).total, 0.0468))
+check(
+  '费用签名随档变（上下文越过阈值会自动重算）',
+  costSignature(USAGE, atContext(1000).prices, 'CNY') !== costSignature(USAGE, atContext(TIER_CUT).prices, 'CNY')
+)
+
+// UI：真点击选档 / 加档 / 改价
+const tierWrites = []
+let tierStore = {
+  activeProfile: 't1',
+  currency: 'CNY',
+  profiles: {
+    t1: {
+      id: 't1',
+      name: '默认',
+      prices: TIER_SMALL,
+      tiers: [
+        { maxContext: TIER_CUT, prices: TIER_SMALL },
+        { maxContext: null, prices: TIER_BIG }
+      ]
+    }
+  },
+  rate: 7.2,
+  sessions: {}
+}
+const tierStorage = {
+  get: (key, fallback) => (key === 'prices' ? structuredClone(tierStore) : fallback),
+  remove: () => {},
+  set: (key, value) => {
+    tierWrites.push(structuredClone(value))
+    tierStore = structuredClone(value)
+  }
+}
+
+$pricesOpen.set(true)
+$profilesOpen.set(true)
+sdk.host.state.focusedSessionId.set('rt-tiers')
+sdk.host.state.model.set(SEED_MODEL)
+sdk.host.state.focusedUsage.set({ ...USAGE, context_used: 45200 })
+
+let tierChip = bootWithStorage(tierStorage)
+let tierView = renderFreshChip(tierChip)
+
+check(
+  'UI：分档条渲染出「自动 / ≤272k / >272k」与「档 1/2」',
+  tierView.html.includes('按上下文分档') &&
+    tierView.html.includes('档 1/2') &&
+    tierView.html.includes('≤272k') &&
+    tierView.html.includes('&gt;272k'),
+  tierView.segments.at(-1)?.options.map(option => `${option.id}:${option.label}`).join(' ')
+)
+check('UI：上下文 45.2k → 自动落第一档，输入框回显第一档的价', tierView.html.includes('value="0.08"'), tierView.html.match(/value="[\d.]+"/g)?.join(' '))
+
+// 上下文涨过阈值 → 自动换档
+sdk.host.state.focusedUsage.set({ ...USAGE, context_used: 400000 })
+tierView = renderFreshChip(tierChip)
+
+check('UI：上下文 400k → 自动落第二档（显示「档 2/2」+ 第二档的价）', tierView.html.includes('档 2/2') && tierView.html.includes('value="0.16"'))
+
+// 点「>272k」那一档 → 手动锁定；锁完小上下文也得按第二档
+const tierSegment = tierView.segments.find(segment => segment.options.some(option => option.id === 'auto'))
+
+tierSegment.onChange('1')
+await sleep(900)
+
+check('UI：点第二档 = 手动锁定（落盘 tierLock=1）', tierStore.profiles.t1.tierLock === 1, JSON.stringify(tierStore.profiles.t1.tierLock))
+
+sdk.host.state.focusedUsage.set({ ...USAGE, context_used: 1000 })
+tierView = renderFreshChip(tierChip)
+
+check(
+  'UI：锁定后上下文变小也不换档（显示「已锁定」）',
+  tierView.html.includes('档 2/2') && tierView.html.includes('已锁定') && tierView.html.includes('value="0.16"')
+)
+
+// 锁在第二档时改价：只动第二档
+priceFieldsOf(tierView.inputs)[0].onChange({ target: { value: '0.3' } })
+await sleep(900)
+
+check(
+  'UI：锁在第二档改价 → 只动第二档，第一档不动',
+  near(tierStore.profiles.t1.tiers[1].prices.input, 0.3) && near(tierStore.profiles.t1.tiers[0].prices.input, 0.08),
+  JSON.stringify(tierStore.profiles.t1.tiers.map(tier => tier.prices.input))
+)
+
+// 点「自动」复位 + 点「加一档」
+tierView = renderFreshChip(tierChip)
+tierView.segments.find(segment => segment.options.some(option => option.id === 'auto')).onChange('auto')
+await sleep(900)
+
+check('UI：点「自动」复位（tierLock 回 -1）', tierStore.profiles.t1.tierLock === -1, JSON.stringify(tierStore.profiles.t1.tierLock))
+
+tierView = renderFreshChip(tierChip)
+tierView.buttons.find(button => button.label.includes('加一档')).onClick()
+await sleep(900)
+
+check(
+  'UI：点「加一档」→ 第三档（切点 = 上一档上限 × 2）',
+  tierStore.profiles.t1.tiers.length === 3 && tierStore.profiles.t1.tiers[1].maxContext === TIER_CUT * 2,
+  JSON.stringify(tierStore.profiles.t1.tiers.map(tier => tier.maxContext))
+)
+
+tierView = renderFreshChip(tierChip)
+tierView.buttons.find(button => button.label.includes('删掉这一档')).onClick()
+await sleep(900)
+
+check('UI：点「删掉这一档」→ 回到 2 档', tierStore.profiles.t1.tiers.length === 2, JSON.stringify(tierStore.profiles.t1.tiers.map(tier => tier.maxContext)))
+
+// 「此会话独立用」换成主题化 Select（原来是原生 <select>：深色面板里白底、展开一片白）
+tierView = renderFreshChip(tierChip)
+
+const bindSelect = tierView.selects.at(-1)
+
+check(
+  'UI：会话绑定用主题化 Select，选项列出全部配置 + 「跟随全局」',
+  tierView.html.includes('data-slot="select-trigger"') &&
+    tierView.html.includes('data-slot="select-content"') &&
+    ['跟随全局', '默认'].every(label => tierView.html.includes(label)),
+  sdk.record.selectItems.slice(-3).map(item => `${item.value}:${item.label}`).join(' ')
+)
+
+bindSelect.onValueChange('t1')
+await sleep(900)
+
+check(
+  'UI：选某个配置 → 本会话绑定落盘',
+  tierStore.sessions['rt-tiers'] === 't1',
+  JSON.stringify(tierStore.sessions)
+)
+
+bindSelect.onValueChange('__follow')
+await sleep(900)
+
+check('UI：选「跟随全局」→ 绑定清除', tierStore.sessions['rt-tiers'] === undefined, JSON.stringify(tierStore.sessions))
+
+$pricesOpen.set(false)
+sdk.host.state.focusedSessionId.set('rt-1')
+sdk.host.state.focusedUsage.set(USAGE)
 
 // ── 汇总 ──────────────────────────────────────────────────────────────────
 console.log(`\n${PASS.length} passed, ${FAIL.length} failed`)
